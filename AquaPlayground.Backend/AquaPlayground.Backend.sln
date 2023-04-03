@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaPlayground.Backend.Common", "AquaPlayground.Backend.Common\AquaPlayground.Backend.Common.csproj", "{2C03399D-7733-45B7-BE75-363D4F014F31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaPlayground.Backend.DataLayer", "AquaPlayground.Backend.DataLayer\AquaPlayground.Backend.DataLayer.csproj", "{8D1A72FA-A1F7-46A9-98F1-3946A882B72F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AquaPlayground.Backend.DataLayer", "AquaPlayground.Backend.DataLayer\AquaPlayground.Backend.DataLayer.csproj", "{8D1A72FA-A1F7-46A9-98F1-3946A882B72F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaPlayground.Backend.Web", "AquaPlayground.Backend.Web\AquaPlayground.Backend.Web.csproj", "{F51DA58D-F3CA-4E95-B0D5-26FF0FB5B840}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{8D1A72FA-A1F7-46A9-98F1-3946A882B72F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D1A72FA-A1F7-46A9-98F1-3946A882B72F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D1A72FA-A1F7-46A9-98F1-3946A882B72F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51DA58D-F3CA-4E95-B0D5-26FF0FB5B840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51DA58D-F3CA-4E95-B0D5-26FF0FB5B840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51DA58D-F3CA-4E95-B0D5-26FF0FB5B840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51DA58D-F3CA-4E95-B0D5-26FF0FB5B840}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
