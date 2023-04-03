@@ -1,22 +1,25 @@
 ﻿using AquaPlayground.Backend.Common.DataBaseConfigurations;
 using AquaPlayground.Backend.Common.Entity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AquaPlayground.Backend.DataLayer
 {
-    public class PostgreSqlContext : DbContext
+    public class SqlContext : IdentityDbContext<User>
     {
-        public PostgreSqlContext()
+        public SqlContext()
         {
 
         }
 
-        public PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : base(options)
+        public SqlContext(DbContextOptions<SqlContext> options) : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new ServiceConfiguration());
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
