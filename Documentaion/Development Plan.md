@@ -1,16 +1,19 @@
+# Project plan
 
-<ol>
-<li>Analyze the requirements and create a list of tasks to be completed.</li>
-<li>Create a project plan with a timeline for each task.</li>
-<li>Create a UML diagram of the classes and their relationships.</li>
-<li>Set up the project structure and create the necessary files and folders.</li>
-<li>Implement Common Layer (models, dtos and database configurations)</li>
-<li>Implement DataLayer (Repositories, interfaces, DI, migrations, and SQLContext.</li>
-<li>Implement Identity</li>
-<li>Implement BuisnessLayer (Interfaces, Services, DI)</li>
-<li>Implement WebAPI (controllers)</li>
-<li>Test the API and logic.</li>
-<li>Add error handling and edge case testing.</li>
-<li>Optimize the app for performance and user experience.</li>
-<li>Begin Frontend part</li>
-</ol>
+The project deadline is 05.05.2023
+
+## Features
+
+| Feature                	          | Project Requirements       | Responsible	| Deadline |
+|-------------------------------------|----------------------------|--------------- |----------|
+| Set Up project                      | none                       | Egor Tomashov  | 21.04    |
+| CRUD Service                        | A-2                        | Egor Tomashov  | 28.04    |
+| CRUD Promotions                     | A-3                        | Egor Tomashov  | 05.05    |
+| CRUD Orders                         | A-1                        | Egor Tomashov  | 12.05    |
+| CRUD OrderPromotions      	      | none                       | Egor Tomashov  | 19.05    |    
+| Add Identity                        | U-1 - U-3                  | Egor Tomashov  | 26.05    |
+| CRUD Users                          | A-4                        | Egor Tomashov  | 02.06    |
+| Filter and sort Services   	      | U-4                        | Egor Tomashov  | 09.06    |
+
+## Gantt diagram
+![Diagram.png](./src/Diagram.png)
