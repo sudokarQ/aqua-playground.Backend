@@ -1,4 +1,4 @@
-﻿using AquaPlayground.Backend.Common.Entity;
+﻿using AquaPlayground.Backend.Common.Models.Entity;
 
 namespace AquaPlayground.Backend.DataLayer.Repositories.Interfaces
 {
