@@ -1,5 +1,6 @@
 ﻿using AquaPlayground.Backend.Common.DataBaseConfigurations;
-using AquaPlayground.Backend.Common.Entity;
+using AquaPlayground.Backend.Common.Models.Entity;
+using DiplomaProject.Backend.Common.DataBaseConfigurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,8 @@ namespace AquaPlayground.Backend.DataLayer
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderPromotionConfiguration());
+
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
         public DbSet<User> Users { get; set; }

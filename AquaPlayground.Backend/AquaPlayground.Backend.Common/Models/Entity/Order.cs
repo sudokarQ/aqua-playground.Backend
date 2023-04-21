@@ -1,6 +1,6 @@
 ﻿using AquaPlayground.Backend.Common.Enums;
 
-namespace AquaPlayground.Backend.Common.Entity
+namespace AquaPlayground.Backend.Common.Models.Entity
 {
     public class Order
     {

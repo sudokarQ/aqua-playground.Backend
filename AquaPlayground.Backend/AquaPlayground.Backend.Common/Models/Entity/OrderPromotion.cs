@@ -1,4 +1,4 @@
-﻿namespace AquaPlayground.Backend.Common.Entity
+﻿namespace AquaPlayground.Backend.Common.Models.Entity
 {
     public class OrderPromotion
     {

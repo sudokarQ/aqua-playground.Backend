@@ -1,4 +1,4 @@
-﻿using AquaPlayground.Backend.Common.Entity;
+﻿using AquaPlayground.Backend.Common.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
