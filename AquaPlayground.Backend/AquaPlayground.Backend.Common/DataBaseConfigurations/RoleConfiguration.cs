@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DiplomaProject.Backend.Common.DataBaseConfigurations
+namespace AquaPlayground.Backend.Common.DataBaseConfigurations
 {
     public class RoleConfiguration : IEntityTypeConfiguration<IdentityRole>
     {

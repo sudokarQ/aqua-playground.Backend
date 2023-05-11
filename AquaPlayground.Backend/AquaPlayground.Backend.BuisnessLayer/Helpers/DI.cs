@@ -1,5 +1,5 @@
 ﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using DiplomaProject.Backend.Web.Services;
+using AquaPlayground.Backend.BuisnessLayer.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,8 +15,8 @@ namespace AquaPlayground.Backend.BuisnessLayer.Helpers
 
         private static void AddClass(IServiceCollection service)
         {
-
             service.AddScoped<IAuthService, AuthService>();
+            service.AddScoped<IServiceService, ServiceService>();
         }
     }
 }

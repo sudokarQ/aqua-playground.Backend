@@ -1,6 +1,4 @@
-﻿
-
-using AquaPlayground.Backend.Common.Models.Dto.User;
+﻿using AquaPlayground.Backend.Common.Models.Dto.User;
 
 namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
 {
