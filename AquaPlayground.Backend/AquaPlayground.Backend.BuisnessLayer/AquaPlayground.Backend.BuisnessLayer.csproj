@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AquaPlayground.Backend.Common\AquaPlayground.Backend.Common.csproj" />
+    <ProjectReference Include="..\AquaPlayground.Backend.DataLayer\AquaPlayground.Backend.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

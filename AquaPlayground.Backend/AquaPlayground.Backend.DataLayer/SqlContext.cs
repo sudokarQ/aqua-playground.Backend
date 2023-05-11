@@ -1,6 +1,5 @@
 ﻿using AquaPlayground.Backend.Common.DataBaseConfigurations;
 using AquaPlayground.Backend.Common.Models.Entity;
-using DiplomaProject.Backend.Common.DataBaseConfigurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

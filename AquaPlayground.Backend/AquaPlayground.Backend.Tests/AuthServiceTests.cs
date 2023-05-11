@@ -1,3 +1,5 @@
+using AquaPlayground.Backend.BuisnessLayer.Services;
+
 [TestFixture]
 public class AuthServiceTests
 {

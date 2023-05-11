@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace DiplomaProject.Backend.Web.Services
+namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
     public class AuthService : IAuthService
     {
@@ -59,7 +59,7 @@ namespace DiplomaProject.Backend.Web.Services
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role)); 
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
             return claims;
@@ -71,12 +71,12 @@ namespace DiplomaProject.Backend.Web.Services
             var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-        }   
+        }
 
         public async Task<bool> ValidateUser(UserLoginDto loginUserDto)
         {
             _user = await _userManager.FindByNameAsync(loginUserDto.Email);
-            return (_user is not null && await _userManager.CheckPasswordAsync(_user, loginUserDto.Password));
+            return _user is not null && await _userManager.CheckPasswordAsync(_user, loginUserDto.Password);
         }
     }
 }
