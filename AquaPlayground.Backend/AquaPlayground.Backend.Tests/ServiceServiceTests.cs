@@ -1,10 +1,11 @@
 ﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
+using AquaPlayground.Backend.BuisnessLayer.Services;
 using AquaPlayground.Backend.Common.Models.Dto;
 using AquaPlayground.Backend.Common.Models.Dto.Service;
 using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
 using System.Linq.Expressions;
 
-namespace AquaPlayground.Backend.BuisnessLayer.Services.Tests
+namespace AquaPlayground.Backend.Tests
 {
     [TestFixture]
     public class ServiceServiceTests

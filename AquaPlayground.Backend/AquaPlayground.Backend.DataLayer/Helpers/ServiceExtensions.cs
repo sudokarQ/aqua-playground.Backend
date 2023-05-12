@@ -16,7 +16,6 @@ namespace AquaPlayground.Backend.DataLayer.Helpers
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
             builder.AddEntityFrameworkStores<SqlContext>().AddDefaultTokenProviders();
-
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
