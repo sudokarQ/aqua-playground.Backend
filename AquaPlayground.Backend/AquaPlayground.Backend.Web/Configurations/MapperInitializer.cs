@@ -10,6 +10,7 @@ namespace AquaPlayground.Backend.Web.Configurations
         public MapperInitializer()
         {
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserGetDto>().ReverseMap();
 
             CreateMap<Service, ServicePostDto>().ReverseMap();
             CreateMap<Service, ServiceGetDto>().ReverseMap();
