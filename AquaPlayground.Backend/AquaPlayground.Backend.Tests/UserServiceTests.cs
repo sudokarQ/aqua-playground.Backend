@@ -1,16 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AquaPlayground.Backend.BuisnessLayer.Intefaces;
+﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
 using AquaPlayground.Backend.BuisnessLayer.Services;
-using AquaPlayground.Backend.Common.Models.Dto.User;
-using AquaPlayground.Backend.Common.Models.Entity;
 using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Moq;
-using NUnit.Framework;
 
-namespace AquaPlayground.Backend.BuisnessLayer.Tests
+namespace AquaPlayground.Backend.Tests
 {
     [TestFixture]
     public class UserServiceTests

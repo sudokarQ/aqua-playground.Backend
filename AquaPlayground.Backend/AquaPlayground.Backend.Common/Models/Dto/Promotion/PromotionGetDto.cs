@@ -1,6 +1,6 @@
-﻿namespace AquaPlayground.Backend.Common.Models.Entity
+﻿namespace AquaPlayground.Backend.Common.Models.Dto.Promotion
 {
-    public class Promotion
+    public class PromotionGetDto
     {
         public Guid Id { get; set; }
         
@@ -12,12 +12,8 @@
         
         public DateTime? EndDate { get; set; }
         
-        public decimal? DiscountPercent { get; set; }
+        public int DiscountPercent { get; set; }
         
         public Guid? ServiceId { get; set; }
-        
-        public Service? Service { get; set; }
-
-        public List<OrderPromotion> OrderPromotions { get; set; }
     }
 }

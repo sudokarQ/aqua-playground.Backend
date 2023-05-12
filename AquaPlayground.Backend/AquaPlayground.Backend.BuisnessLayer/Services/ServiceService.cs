@@ -1,7 +1,7 @@
 ﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto;
 using AquaPlayground.Backend.Common.Models.Dto.Service;
 using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
@@ -17,21 +17,18 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task CreateAsync(ServicePostDto service)
         {
-            if (Validation(service))
-                await _serviceRepository.CreateAsync(new()
+            await _serviceRepository.CreateAsync(new()
                 {
                     Name = service.Name,
                     TypeService = service.TypeService,
                     Price = service.Price,
                     Description = service.Description,
                 });
-            else
-                throw new Exception("Validation declined");
         }
 
-        public async Task<List<ServiceGetDto>?> FindByIdAsync(IdDto dto)
+        public async Task<List<ServiceGetDto>?> FindByIdAsync(Guid id)
         {
-            var service = await _serviceRepository.FindByIdAsync(dto.Id);
+            var service = await _serviceRepository.FindByIdAsync(id);
 
 
             return service is null ? null :
@@ -84,9 +81,9 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             return result;
         }
 
-        public async Task RemoveAsync(IdDto dto)
+        public async Task RemoveAsync(Guid id)
         {
-            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
+            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
 
             if (service is null)
             {
@@ -110,16 +107,6 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             service.Price = dto.Price ?? service.Price;
 
             await _serviceRepository.UpdateAsync(service);
-        }
-
-        private bool Validation(ServicePostDto service)
-        {
-            if (string.IsNullOrEmpty(service.Name) || string.IsNullOrEmpty(service.TypeService) || service.Price < 0)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

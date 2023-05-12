@@ -235,13 +235,13 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81748df9-5833-4fd4-a797-f55178e08dac",
+                            Id = "a373e9ae-0b6d-4d8a-badf-5d5746f2ad25",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "63979267-1225-46a6-82b0-12efbbda9b64",
+                            Id = "2aba2927-3e55-4606-8ef8-463f1998a9a8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -358,7 +358,7 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                     b.HasOne("AquaPlayground.Backend.Common.Models.Entity.Service", "Service")
                         .WithMany("Orders")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AquaPlayground.Backend.Common.Models.Entity.User", "User")
@@ -393,7 +393,8 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                 {
                     b.HasOne("AquaPlayground.Backend.Common.Models.Entity.Service", "Service")
                         .WithMany("Promotions")
-                        .HasForeignKey("ServiceId");
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Service");
                 });

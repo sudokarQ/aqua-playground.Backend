@@ -1,6 +1,5 @@
 ﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
 using AquaPlayground.Backend.BuisnessLayer.Services;
-using AquaPlayground.Backend.Common.Models.Dto;
 using AquaPlayground.Backend.Common.Models.Dto.Service;
 using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
 using System.Linq.Expressions;
@@ -44,16 +43,6 @@ namespace AquaPlayground.Backend.Tests
         }
 
         [Test]
-        public void CreateAsync_InvalidInput_ThrowsException()
-        {
-            // Arrange
-            var service = new ServicePostDto();
-
-            // Act & Assert
-            Assert.ThrowsAsync<Exception>(() => _serviceService.CreateAsync(service));
-        }
-
-        [Test]
         public async Task FindByIdAsync_ServiceExists_ReturnsService()
         {
             // Arrange
@@ -63,7 +52,7 @@ namespace AquaPlayground.Backend.Tests
                 .ReturnsAsync(new Service { Id = serviceId });
 
             // Act
-            var result = await _serviceService.FindByIdAsync(new IdDto { Id = serviceId });
+            var result = await _serviceService.FindByIdAsync(serviceId);
 
             // Assert
             Assert.IsNotNull(result);
@@ -80,7 +69,7 @@ namespace AquaPlayground.Backend.Tests
                 .ReturnsAsync((Service)null);
 
             // Act
-            var result = await _serviceService.FindByIdAsync(new IdDto { Id = serviceId });
+            var result = await _serviceService.FindByIdAsync(serviceId);
 
             // Assert
             Assert.IsNull(result);

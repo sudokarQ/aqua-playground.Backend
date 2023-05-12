@@ -2,7 +2,7 @@
 
 namespace AquaPlayground.Backend.Common.Models.Dto.Service
 {
-    public class ServicePutDto : IdDto
+    public class ServicePutDto
     {
         [Required]
         public Guid Id { get; set; }

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AquaPlayground.Backend.DataLayer.Migrations
 {
     /// <inheritdoc />
@@ -107,7 +109,8 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                         name: "FK_promotions_services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "services",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -201,11 +204,10 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotaPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DeliveryAdress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ServicePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
@@ -216,11 +218,10 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                         name: "FK_orders_services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_orders_users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_orders_users_UserId",
+                        column: x => x.UserId,
                         principalTable: "users",
                         principalColumn: "Id");
                 });
@@ -247,6 +248,15 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                         principalTable: "promotions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "2aba2927-3e55-4606-8ef8-463f1998a9a8", null, "Admin", "ADMIN" },
+                    { "a373e9ae-0b6d-4d8a-badf-5d5746f2ad25", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -287,9 +297,9 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_UserId1",
+                name: "IX_orders_UserId",
                 table: "orders",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_promotions_ServiceId",
