@@ -21,11 +21,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             _authManager = authManager;
         }
 
-        [HttpPost]
-        [Route("register")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto dto)
         {
             if (!ModelState.IsValid)
@@ -60,8 +56,7 @@ namespace AquaPlayground.Backend.Web.Controllers
 
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
         {
             if (!ModelState.IsValid)
@@ -81,8 +76,6 @@ namespace AquaPlayground.Backend.Web.Controllers
             {
                 return Problem("Something went wrong with login", statusCode: 500);
             }
-
         }
-
     }
 }

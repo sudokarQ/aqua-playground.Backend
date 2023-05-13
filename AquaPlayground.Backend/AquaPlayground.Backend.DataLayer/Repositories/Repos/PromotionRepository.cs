@@ -1,5 +1,4 @@
 ﻿using AquaPlayground.Backend.Common.Models.Entity;
-using AquaPlayground.Backend.DataLayer;
 using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

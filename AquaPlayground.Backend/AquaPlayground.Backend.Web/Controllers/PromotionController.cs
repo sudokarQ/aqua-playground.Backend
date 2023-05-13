@@ -1,29 +1,28 @@
 ﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.Service;
+using AquaPlayground.Backend.Common.Models.Dto.Promotion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AquaPlayground.Backend.Web.Controllers
 {
     [ApiController]
-    public class ServiceController : Controller
+    public class PromotionController : Controller
     {
-        private readonly IServiceService _serviceService;
+        private readonly IPromotionService _promotionService;
 
-        public ServiceController(IServiceService serviceService)
+        public PromotionController(IPromotionService promotionService)
         {
-            _serviceService = serviceService;
+            _promotionService = promotionService;
         }
 
-
-        [HttpGet("GetAllServices")]
+        [HttpGet("GetAllPromotions")]
         [Produces("application/json")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync()
         {
             try
             {
-                var services = await _serviceService.GetAllAsync();
+                var services = await _promotionService.GetAllAsync();
 
                 return Ok(services);
             }
@@ -33,14 +32,14 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetServicesByName")]
+        [HttpGet("GetPromotionsByName")]
         [Produces("application/json")]
         [AllowAnonymous]
         public async Task<IActionResult> GetListByName(string name)
         {
             try
             {
-                var services = await _serviceService.GetListByNameAsync(name);
+                var services = await _promotionService.GetListByNameAsync(name);
 
                 return Ok(services);
             }
@@ -50,14 +49,14 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpPost("CreateService")]
+        [HttpPost("CreatePromotion")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateAsync(ServicePostDto servicePostDto)
+        public async Task<IActionResult> CreateAsync(PromotionPostDto servicePostDto)
         {
             try
             {
-                await _serviceService.CreateAsync(servicePostDto);
+                await _promotionService.CreateAsync(servicePostDto);
 
                 return Ok();
             }
@@ -67,14 +66,14 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpDelete("DeleteService")]
+        [HttpDelete("DeletePromotion")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(Guid id)
         {
             try
             {
-                await _serviceService.RemoveAsync(id);
+                await _promotionService.RemoveAsync(id);
 
                 return Ok();
             }
@@ -84,14 +83,14 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpPut("UpdateService")]
+        [HttpPut("UpdatePromotion")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update(ServicePutDto dto)
+        public async Task<IActionResult> Update(PromotionPutDto dto)
         {
             try
             {
-                await _serviceService.UpdateAsync(dto);
+                await _promotionService.UpdateAsync(dto);
 
                 return Ok();
             }
@@ -101,14 +100,14 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("FindService")]
+        [HttpGet("FindPromotion")]
         [Produces("application/json")]
         [AllowAnonymous]
         public async Task<IActionResult> FindByIdAsync(Guid id)
         {
             try
             {
-                var serviceDto = await _serviceService.FindByIdAsync(id);
+                var serviceDto = await _promotionService.FindByIdAsync(id);
 
                 return Ok(serviceDto);
             }
