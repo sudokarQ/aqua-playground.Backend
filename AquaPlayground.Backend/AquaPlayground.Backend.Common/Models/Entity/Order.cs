@@ -15,12 +15,8 @@ namespace AquaPlayground.Backend.Common.Models.Entity
         public string DeliveryAdress { get; set; }
         
         public User? User { get; set; }
-        
-        public Guid ServiceId { get; set; }
-        
-        public Service? Service { get; set; }
-        
-        public decimal? ServicePrice { get; set; }
+
+        public List<OrderService> OrderServices { get; set; } = new List<OrderService>();
 
         public List<OrderPromotion> OrderPromotions { get; set; }
     }

@@ -25,6 +25,7 @@ namespace AquaPlayground.Backend.DataLayer
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderPromotionConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderServiceConfiguration());
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }

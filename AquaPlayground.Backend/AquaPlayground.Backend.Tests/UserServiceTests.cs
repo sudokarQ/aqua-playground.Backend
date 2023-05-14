@@ -1,9 +1,4 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.BuisnessLayer.Services;
-using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using AutoMapper;
-
-namespace AquaPlayground.Backend.Tests
+﻿namespace AquaPlayground.Backend.Tests
 {
     [TestFixture]
     public class UserServiceTests

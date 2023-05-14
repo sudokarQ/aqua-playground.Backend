@@ -4,6 +4,7 @@ using AquaPlayground.Backend.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AquaPlayground.Backend.DataLayer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20230515133224_deleteJoinTable")]
+    partial class deleteJoinTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,27 +67,6 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                     b.HasIndex("PromotionId");
 
                     b.ToTable("order_promotion", (string)null);
-                });
-
-            modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.OrderService", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ServiceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("order_services", (string)null);
                 });
 
             modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.Promotion", b =>
@@ -248,13 +230,13 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "015efa13-716d-4212-aeac-2617f61066f2",
+                            Id = "14a1b23a-ea45-4525-80da-57b25fce5494",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "6f7cb7bc-ff71-4740-a2d9-acdc86010658",
+                            Id = "db2adf47-35bf-464a-9996-9798c550f70e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -366,6 +348,21 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("OrderService", b =>
+                {
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ServicesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("OrdersId", "ServicesId");
+
+                    b.HasIndex("ServicesId");
+
+                    b.ToTable("OrderService");
+                });
+
             modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.Order", b =>
                 {
                     b.HasOne("AquaPlayground.Backend.Common.Models.Entity.User", "User")
@@ -392,25 +389,6 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Promotion");
-                });
-
-            modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.OrderService", b =>
-                {
-                    b.HasOne("AquaPlayground.Backend.Common.Models.Entity.Order", "Order")
-                        .WithMany("OrderServices")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AquaPlayground.Backend.Common.Models.Entity.Service", "Service")
-                        .WithMany("OrderServices")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.Promotion", b =>
@@ -474,11 +452,24 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OrderService", b =>
+                {
+                    b.HasOne("AquaPlayground.Backend.Common.Models.Entity.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AquaPlayground.Backend.Common.Models.Entity.Service", null)
+                        .WithMany()
+                        .HasForeignKey("ServicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.Order", b =>
                 {
                     b.Navigation("OrderPromotions");
-
-                    b.Navigation("OrderServices");
                 });
 
             modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.Promotion", b =>
@@ -488,8 +479,6 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
 
             modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.Service", b =>
                 {
-                    b.Navigation("OrderServices");
-
                     b.Navigation("Promotions");
                 });
 
