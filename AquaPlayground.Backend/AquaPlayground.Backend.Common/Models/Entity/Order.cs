@@ -16,6 +16,8 @@ namespace AquaPlayground.Backend.Common.Models.Entity
         
         public User? User { get; set; }
 
+        public string UserId { get; set; }
+
         public List<OrderService> OrderServices { get; set; } = new List<OrderService>();
 
         public List<OrderPromotion> OrderPromotions { get; set; }

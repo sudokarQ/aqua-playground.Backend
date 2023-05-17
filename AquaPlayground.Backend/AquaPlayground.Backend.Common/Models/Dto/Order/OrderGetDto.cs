@@ -9,6 +9,8 @@ namespace AquaPlayground.Backend.Common.Models.Dto.Order
 
         public string UserSurname { get; set; }
 
+        public string DeliveryAdress { get; set; }
+
         public DateTime DateTime { get; set; }
 
         public OrderStatus Status { get; set; }
