@@ -1,4 +1,5 @@
-﻿using AquaPlayground.Backend.Common.Models.Dto.Promotion;
+﻿using AquaPlayground.Backend.Common.Models.Dto.Order;
+using AquaPlayground.Backend.Common.Models.Dto.Promotion;
 using AquaPlayground.Backend.Common.Models.Dto.Service;
 using AquaPlayground.Backend.Common.Models.Dto.User;
 using AquaPlayground.Backend.Common.Models.Entity;
@@ -21,6 +22,9 @@ namespace AquaPlayground.Backend.Web.Configurations
             CreateMap<Promotion, PromotionPostDto>().ReverseMap();
             CreateMap<Promotion, PromotionGetDto>().ReverseMap();
             CreateMap<Promotion, PromotionPutDto>().ReverseMap();
+
+            CreateMap<Order, OrderPostDto>().ReverseMap();
+            CreateMap<Order, OrderGetDto>().ReverseMap();
         }
     }
 }

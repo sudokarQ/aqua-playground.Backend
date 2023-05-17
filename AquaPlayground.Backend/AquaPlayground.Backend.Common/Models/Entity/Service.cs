@@ -11,9 +11,9 @@
         public string TypeService { get; set; }
         
         public decimal Price { get; set; }
-        
-        public List<Order>? Orders { get; set; }
-        
+
+        public List<OrderService> OrderServices { get; set; }
+
         public List<Promotion>? Promotions { get; set; }
     }
 }

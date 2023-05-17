@@ -14,17 +14,12 @@ namespace AquaPlayground.Backend.Common.DataBaseConfigurations
 
             builder.HasMany(t => t.Promotions);
 
-            builder.HasMany(t => t.Orders);
+            builder.HasMany(t => t.OrderServices);
 
             builder
                 .HasMany(s => s.Promotions)
                 .WithOne(p => p.Service)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder
-                .HasMany(s => s.Orders)
-                .WithOne(p => p.Service)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

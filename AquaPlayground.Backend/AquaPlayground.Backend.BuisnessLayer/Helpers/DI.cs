@@ -19,6 +19,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Helpers
             service.AddScoped<IServiceService, ServiceService>();
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IPromotionService, PromotionService>();
+            service.AddScoped<IOrderService, OrderService>();
         }
     }
 }

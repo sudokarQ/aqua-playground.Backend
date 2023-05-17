@@ -4,6 +4,7 @@ using AquaPlayground.Backend.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AquaPlayground.Backend.DataLayer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20230515141711_updateOrderService")]
+    partial class updateOrderService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,19 +71,13 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
 
             modelBuilder.Entity("AquaPlayground.Backend.Common.Models.Entity.OrderService", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ServiceId");
 
                     b.HasIndex("ServiceId");
 
@@ -248,13 +245,13 @@ namespace AquaPlayground.Backend.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "015efa13-716d-4212-aeac-2617f61066f2",
+                            Id = "f53d6395-fa36-4145-8a2f-1885011f10a0",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "6f7cb7bc-ff71-4740-a2d9-acdc86010658",
+                            Id = "95ec954c-d6ea-4f10-8dd9-0aed19147131",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

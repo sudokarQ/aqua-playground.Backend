@@ -22,9 +22,9 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var services = await _promotionService.GetAllAsync();
+                var promotions = await _promotionService.GetAllAsync();
 
-                return Ok(services);
+                return Ok(promotions);
             }
             catch (Exception ex)
             {
@@ -39,9 +39,9 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var services = await _promotionService.GetListByNameAsync(name);
+                var promotions = await _promotionService.GetListByNameAsync(name);
 
-                return Ok(services);
+                return Ok(promotions);
             }
             catch (Exception ex)
             {
@@ -52,11 +52,11 @@ namespace AquaPlayground.Backend.Web.Controllers
         [HttpPost("CreatePromotion")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateAsync(PromotionPostDto servicePostDto)
+        public async Task<IActionResult> CreateAsync(PromotionPostDto promotionPostDto)
         {
             try
             {
-                await _promotionService.CreateAsync(servicePostDto);
+                await _promotionService.CreateAsync(promotionPostDto);
 
                 return Ok();
             }
@@ -107,9 +107,9 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var serviceDto = await _promotionService.FindByIdAsync(id);
+                var promotionDto = await _promotionService.FindByIdAsync(id);
 
-                return Ok(serviceDto);
+                return Ok(promotionDto);
             }
             catch (Exception ex)
             {

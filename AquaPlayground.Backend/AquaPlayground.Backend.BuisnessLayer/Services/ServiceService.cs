@@ -1,7 +1,6 @@
 ﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
 using AquaPlayground.Backend.Common.Models.Dto.Service;
 using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using System.ComponentModel.DataAnnotations;
 
 namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
@@ -45,11 +44,11 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
                 };
         }
 
-        public async Task<List<ServiceSearchGetDto>> GetListByNameAsync(string name)
+        public async Task<List<ServiceGetDto>> GetListByNameAsync(string name)
         {
             var services = await _serviceRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
 
-            return services.Select(x => new ServiceSearchGetDto
+            return services.Select(x => new ServiceGetDto
             {
                 Id = x.Id,
                 Name = x.Name,

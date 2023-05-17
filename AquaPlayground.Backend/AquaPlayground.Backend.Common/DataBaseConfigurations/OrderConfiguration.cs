@@ -14,7 +14,8 @@ namespace AquaPlayground.Backend.Common.DataBaseConfigurations
 
             builder.HasMany(t => t.OrderPromotions);
 
-            builder.HasOne(t => t.Service);
+            builder.HasMany(t => t.OrderServices);
+
             builder.HasOne(t => t.User);
         }
     }
