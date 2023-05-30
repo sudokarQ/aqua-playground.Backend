@@ -1,5 +1,4 @@
 ﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.BuisnessLayer.Services;
 using AquaPlayground.Backend.Common.Models.Dto.Order;
 using AquaPlayground.Backend.Common.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +29,7 @@ namespace AquaPlayground.Backend.Web.Controllers
 
             try
             {
-                await _orderService.CreateAsync(orderPostDto, user);
+                await _orderService.CreateAsync(orderPostDto, user.Id);
 
                 return Ok();
             }
@@ -129,8 +128,7 @@ namespace AquaPlayground.Backend.Web.Controllers
 
         [HttpDelete("DeleteOrder")]
         [Produces("application/json")]
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(Guid id)
         {
             try

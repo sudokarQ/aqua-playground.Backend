@@ -21,7 +21,7 @@ namespace AquaPlayground.Backend.DataLayer.Repositories.Repos
             _userManager = userManager;
         }
 
-        public async Task<User> FindByIdAsync(string id) 
+        public async Task<User> FindByIdAsync(string id)
             => await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<List<User>> FindByLoginAsync(string login) 

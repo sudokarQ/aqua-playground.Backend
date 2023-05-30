@@ -35,5 +35,6 @@ namespace AquaPlayground.Backend.DataLayer
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderPromotion> OrderPromotions { get; set; }
+        public DbSet<OrderService> OrderServices { get; set; }
     }
 }
