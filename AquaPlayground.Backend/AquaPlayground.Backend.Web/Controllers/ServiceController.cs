@@ -19,11 +19,16 @@ namespace AquaPlayground.Backend.Web.Controllers
         [HttpGet("GetAllServices")]
         [Produces("application/json")]
         [AllowAnonymous]
+        //[Authorize]
         public async Task<IActionResult> GetAllAsync()
         {
             try
             {
                 var services = await _serviceService.GetAllAsync();
+
+                Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                Response.Headers.Add("Access-Control-Allow-Methods", "GET");
+
 
                 return Ok(services);
             }

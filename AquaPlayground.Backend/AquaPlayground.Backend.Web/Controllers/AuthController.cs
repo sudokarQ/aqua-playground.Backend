@@ -59,6 +59,10 @@ namespace AquaPlayground.Backend.Web.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Response.Headers.Add("Access-Control-Allow-Methods", "Post");
+
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

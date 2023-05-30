@@ -96,9 +96,9 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
         {
             var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-            if (service is null || (service.Name == dto.Name && service.Price == dto.Price && service.Description == dto.Description))
+            if (service is null)
             {
-                throw new ArgumentException("Сервис не найден или присвоены старые значения всех полей");
+                throw new ArgumentException("Serivce not found");
             }
 
             service.Name = dto.Name ?? service.Name;
