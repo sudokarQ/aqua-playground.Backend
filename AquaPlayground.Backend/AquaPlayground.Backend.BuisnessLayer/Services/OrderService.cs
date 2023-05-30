@@ -53,7 +53,8 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
             var result = _mapper.Map<OrderGetDto>(order);
 
-            result.UserSurname = order.User.Surname;
+            result.PhoneNumber = order.User.PhoneNumber;
+
             result.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
             {
                 Name = os.Service.Name,
@@ -71,7 +72,9 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             foreach (var order in orders)
             {
                 var temp = _mapper.Map<OrderGetDto>(order);
-                temp.UserSurname = order.User.Surname;
+
+                temp.PhoneNumber = order.User.PhoneNumber;
+
                 temp.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
                 {
                     Name = os.Service.Name,
@@ -93,7 +96,9 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             foreach (var order in orders)
             {
                 var temp = _mapper.Map<OrderGetDto>(order);
-                temp.UserSurname = order.User.Surname;
+
+                temp.PhoneNumber = order.User.PhoneNumber;
+
                 temp.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
                 {
                     Name = os.Service.Name,
@@ -115,7 +120,9 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             foreach (var order in orders)
             {
                 var temp = _mapper.Map<OrderGetDto>(order);
-                temp.UserSurname = order.User.Surname;
+
+                temp.PhoneNumber = order.User.PhoneNumber;
+                
                 temp.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
                 {
                     Name = os.Service.Name,
@@ -151,7 +158,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             {
                 await CreateAsync(new OrderPostDto
                 {
-                    Status = Common.Enums.OrderStatus.Added,
+                    Status = Common.Enums.OrderStatus.InCart,
                     DeliveryAdress = "Empty",
                 }, userId);
 

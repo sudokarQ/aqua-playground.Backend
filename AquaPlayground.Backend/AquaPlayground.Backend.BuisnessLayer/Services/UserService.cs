@@ -60,11 +60,6 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task<IdentityResult> UpdateUserAsync(UserUpdateDto dto, User user)
         {
-            if (await _userRepository.AnyAsync(u => u.Email == dto.Email))
-            {
-                return IdentityResult.Failed(new IdentityError { Description = "Email is already taken" });
-            }
-
             if (!string.IsNullOrWhiteSpace(dto.Password))
             {
                 var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, dto.Password);
@@ -72,18 +67,20 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
                 user.PasswordHash = newPasswordHash ?? user.PasswordHash;
             }
 
-            if (!string.IsNullOrEmpty(dto.Name) && !string.IsNullOrWhiteSpace(dto.Name))
+            if (!string.IsNullOrWhiteSpace(dto.Name))
             {
                 user.Name = dto.Name;
             }
 
-            if (!string.IsNullOrEmpty(dto.Surname) && !string.IsNullOrWhiteSpace(dto.Surname))
+            if (!string.IsNullOrWhiteSpace(dto.Surname))
             {
                 user.Surname = dto.Surname;
             }
 
-            user.Email = dto.Email ?? user.Email;
-            user.UserName = user.Email;
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+            {
+                user.PhoneNumber = dto.PhoneNumber;
+            }
 
             var result = await _userManager.UpdateAsync(user);
 

@@ -64,12 +64,13 @@ namespace AquaPlayground.Backend.DataLayer.Repositories.Repos
             .Include(x => x.User)
             .Include(x => x.OrderServices)
             .ThenInclude(xs => xs.Service)
-            .Where(x => x.User.Id == id && x.Status == OrderStatus.Added)
+            .Where(x => x.User.Id == id && x.Status == OrderStatus.InCart)
             .AsNoTracking().FirstOrDefaultAsync();
 
         public async Task<List<Order>> FindByDateAsync(DateTime? begin, DateTime? end, string id)
         {
             IQueryable<Order> query = _dbSet
+                .Where(x => x.Status == OrderStatus.Ordered)
                 .Include(x => x.User)
                 .Include(x => x.OrderServices)
                 .ThenInclude(xs => xs.Service)

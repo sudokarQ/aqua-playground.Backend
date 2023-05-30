@@ -39,7 +39,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
             var result = _mapper.Map<OrderGetDto>(order);
 
-            result.UserSurname = order.User.Surname;
+            result.PhoneNumber = order.User.PhoneNumber;
             result.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
             {
                 Id = os.Service.Id,
@@ -153,7 +153,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             order.UserId = userId;
             order.DateTime = DateTime.Now;
             order.DeliveryAdress = adress;
-            order.Status = Common.Enums.OrderStatus.Accepted;
+            order.Status = Common.Enums.OrderStatus.Ordered;
 
             await _orderRepository.UpdateAsync(order);
 
@@ -166,7 +166,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             {
                 await _orderService.CreateAsync(new OrderPostDto
                 {
-                    Status = Common.Enums.OrderStatus.Added,
+                    Status = Common.Enums.OrderStatus.InCart,
                     DeliveryAdress = "Empty",
                 }, userId);
 

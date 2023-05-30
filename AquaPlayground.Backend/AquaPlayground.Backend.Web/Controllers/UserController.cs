@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AquaPlayground.Backend.Web.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class UserController : Controller
@@ -21,7 +22,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("GetAllUsers")]
+        [HttpGet]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAsync()
@@ -38,10 +39,29 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetUsersByName")]
+        [HttpGet("profile")]
+        [Authorize]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetMyProfile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            try
+            {
+                var result = await _userService.FindByIdAsync(user.Id);
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
+        [HttpGet("name")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListByName(string name)
+        public async Task<IActionResult> GetListByName([FromQuery] string name)
         {
             try
             {
@@ -55,10 +75,10 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetUsersByLogin")]
+        [HttpGet("login")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListByLogin(string login)
+        public async Task<IActionResult> GetListByLogin([FromQuery] string login)
         {
             try
             {
@@ -72,7 +92,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("FindUser")]
+        [HttpGet("{id}")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> FindByIdAsync(string id)
@@ -89,7 +109,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpPut("UpdateUser")]
+        [HttpPut]
         public async Task<IActionResult> UpdateUser(UserUpdateDto dto)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -104,8 +124,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             return Ok("Updated");
         }
 
-        [Authorize]
-        [HttpDelete("DeleteUser")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteUser()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -120,7 +139,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             return Ok("Deleted");
         }
 
-        [HttpDelete("DeleteUser/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string id)
         {

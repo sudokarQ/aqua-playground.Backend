@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AquaPlayground.Backend.Web.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class CartController : Controller
     {
@@ -22,7 +23,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             _serviceService = serviceService;
         }
 
-        [HttpGet("Cart")]
+        [HttpGet]
         [Produces("application/json")]
         [Authorize]
         public async Task<IActionResult> GetCart()
@@ -41,7 +42,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpPut("OrderFromCart")]
+        [HttpPut("Order")]
         [Produces("application/json")]
         [Authorize]
         public async Task<IActionResult> OrderFromCart(string? adress)

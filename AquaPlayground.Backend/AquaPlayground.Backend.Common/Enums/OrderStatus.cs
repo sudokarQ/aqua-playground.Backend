@@ -2,12 +2,7 @@
 {
     public enum OrderStatus
     {
-        Added,
-        Accepted,
-        Preparing,
-        Transiting,
-        Delivery,
-        Closed,
-        Cancelled,
+        InCart,
+        Ordered,
     }
 }
