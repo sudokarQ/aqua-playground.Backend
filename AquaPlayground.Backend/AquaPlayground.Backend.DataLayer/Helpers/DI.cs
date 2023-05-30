@@ -18,7 +18,7 @@ namespace AquaPlayground.Backend.DataLayer.Helpers
         {
             string connection = conf.GetConnectionString("AquaPlayground");
 
-            service.AddDbContext<SqlContext>(options => options.UseSqlServer(connection));
+            service.AddDbContext<SqlContext>(options => options.UseSqlServer(connection).EnableSensitiveDataLogging(), ServiceLifetime.Scoped);
         }
 
         private static void AddClass(IServiceCollection service)
@@ -28,6 +28,7 @@ namespace AquaPlayground.Backend.DataLayer.Helpers
             service.AddScoped<IServiceRepository, ServiceRepository>();
             service.AddScoped<IPromotionRepository, PromotionRepository>();
             service.AddScoped<IOrderPromotionRepository, OrderPromotionRepository>();
+            service.AddScoped<IOrderServiceRepository, OrderServiceRepository>();
         }
     }
 }

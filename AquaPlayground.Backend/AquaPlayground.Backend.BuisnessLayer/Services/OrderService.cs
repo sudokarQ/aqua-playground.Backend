@@ -22,10 +22,10 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             _serviceRepository = serviceRepository;
         }
 
-        public async Task CreateAsync(OrderPostDto orderDto, User user)
+        public async Task CreateAsync(OrderPostDto orderDto, string userId)
         {
             var order = _mapper.Map<Order>(orderDto);
-                
+
             decimal sum = 0;
             foreach (var serviceId in orderDto.ServicesId)
             {
@@ -39,7 +39,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
                 }
             }
 
-            order.User = user;
+            order.UserId = userId;
             order.DateTime = DateTime.Now;
             order.TotalPrice = sum;
 
@@ -65,28 +65,6 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
         public async Task<List<OrderGetDto>> GetAllAsync()
         {
             var orders = await _orderRepository.GetAllAsync();
-
-            var result = new List<OrderGetDto>();
-
-            foreach (var order in orders)
-            {
-                var temp = _mapper.Map<OrderGetDto>(order);
-                temp.UserSurname = order.User.Surname;
-                temp.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
-                {
-                    Name = os.Service.Name,
-                    Price = os.Service.Price
-                }).ToList();
-
-                result.Add(temp);
-            }
-
-            return result;
-        }
-
-        public async Task<List<OrderGetDto>> GetClientCart(string id)
-        {
-            var orders = await _orderRepository.GetClientCart(id);
 
             var result = new List<OrderGetDto>();
 
@@ -156,16 +134,32 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
             if (order is null)
             {
-                throw new ArgumentNullException("Promotinon not found");
+                throw new ArgumentNullException("Order not found");
             }
 
             foreach (Common.Models.Entity.OrderService orderService in order.OrderServices)
             {
                 orderService.Service = null;
             }
+
             await _orderRepository.RemoveAsync(order);
         }
 
+        public async Task<bool> DoesOrderExist(Order order, string userId)
+        {
+            if (order is null)
+            {
+                await CreateAsync(new OrderPostDto
+                {
+                    Status = Common.Enums.OrderStatus.Added,
+                    DeliveryAdress = "Empty",
+                }, userId);
+
+                return false;
+            }
+
+            return true;
+        }
         public Task UpdateAsync(OrderPutDto dto)
         {
             throw new NotImplementedException();

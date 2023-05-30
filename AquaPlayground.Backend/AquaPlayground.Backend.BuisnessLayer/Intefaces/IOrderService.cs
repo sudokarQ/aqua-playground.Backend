@@ -5,7 +5,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
 {
     public interface IOrderService
     {
-        Task CreateAsync(OrderPostDto order, User user);
+        Task CreateAsync(OrderPostDto order, string userId);
         
         Task RemoveAsync(Guid id);
         
@@ -16,8 +16,6 @@ namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
         Task<OrderGetDto> FindByIdAsync(Guid id);
         
         Task<List<OrderGetDto>> GetListByUserIdAsync(string id);
-        
-        Task<List<OrderGetDto>> GetClientCart(string id);
         
         Task<List<OrderGetDto>> GetListByDatesAsync(DateTime? begin, DateTime? end, string id);
     }
