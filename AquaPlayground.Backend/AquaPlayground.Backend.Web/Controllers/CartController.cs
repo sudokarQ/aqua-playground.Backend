@@ -44,7 +44,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         [HttpPut("OrderFromCart")]
         [Produces("application/json")]
         [Authorize]
-        public async Task<IActionResult> OrderFromCart(string adress)
+        public async Task<IActionResult> OrderFromCart(string? adress)
         {
             var user = await _userManager.GetUserAsync(User);
 
