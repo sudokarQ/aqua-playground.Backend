@@ -9,6 +9,9 @@ namespace AquaPlayground.Backend.Common.Models.Dto.Order
         public string DeliveryAdress { get; set; }
 
         [Required]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         public OrderStatus Status { get; set; }
 
         [Required]

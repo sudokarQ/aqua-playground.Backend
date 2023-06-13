@@ -1,5 +1,4 @@
 ﻿using AquaPlayground.Backend.Common.Models.Dto.Order;
-using AquaPlayground.Backend.Common.Models.Entity;
 
 namespace AquaPlayground.Backend.Tests
 {
@@ -34,7 +33,7 @@ namespace AquaPlayground.Backend.Tests
 
         private static OrderPostDto _orderPostDto = new OrderPostDto
         {
-            Status = Common.Enums.OrderStatus.Accepted,
+            Status = Common.Enums.OrderStatus.Ordered,
             DeliveryAdress = "adress",
             ServicesId = new List<Guid>
             {
@@ -47,10 +46,9 @@ namespace AquaPlayground.Backend.Tests
         private static Order order = new Order
         {
             Id = Guid.NewGuid(),
-            Status = Common.Enums.OrderStatus.Accepted,
+            Status = Common.Enums.OrderStatus.Ordered,
             DeliveryAdress = "adress",
             User = _user,
-            // Set properties of the order object
         };
 
         [SetUp]
@@ -85,7 +83,6 @@ namespace AquaPlayground.Backend.Tests
                 .Returns<Order>(order => new OrderGetDto
                 {
                     Id = order.Id,
-                    // Set other properties of the OrderGetDto
                 });
 
             // Act
@@ -93,7 +90,6 @@ namespace AquaPlayground.Backend.Tests
 
             // Assert
             Assert.NotNull(result);
-            // Assert individual OrderGetDto properties and mappings
 
             _orderRepositoryMock.Verify(r => r.GetClientCart(clientId), Times.Once);
         }
@@ -153,7 +149,7 @@ namespace AquaPlayground.Backend.Tests
             var result = await _cartService.OrderFromCart(userId, address);
 
             // Assert
-            Assert.AreEqual(Common.Enums.OrderStatus.Accepted, result.Status);
+            Assert.AreEqual(Common.Enums.OrderStatus.Ordered, result.Status);
             Assert.AreEqual(userId, result.UserId);
             Assert.AreEqual(address, result.DeliveryAdress);
             Assert.AreNotEqual(DateTime.MinValue, result.DateTime);

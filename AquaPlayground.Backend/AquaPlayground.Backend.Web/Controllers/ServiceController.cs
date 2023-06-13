@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AquaPlayground.Backend.Web.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class ServiceController : Controller
     {
@@ -16,10 +17,8 @@ namespace AquaPlayground.Backend.Web.Controllers
         }
 
 
-        [HttpGet("GetAllServices")]
+        [HttpGet()]
         [Produces("application/json")]
-        [AllowAnonymous]
-        //[Authorize]
         public async Task<IActionResult> GetAllAsync()
         {
             try
@@ -38,10 +37,10 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetServicesByName")]
+        [HttpGet("name")]
         [Produces("application/json")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetListByName(string name)
+        public async Task<IActionResult> GetListByName([FromQuery] string name)
         {
             try
             {
@@ -55,7 +54,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpPost("CreateService")]
+        [HttpPost]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsync(ServicePostDto servicePostDto)
@@ -72,7 +71,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpDelete("DeleteService")]
+        [HttpDelete]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(Guid id)
@@ -89,7 +88,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpPut("UpdateService")]
+        [HttpPut]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(ServicePutDto dto)
@@ -106,7 +105,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("FindService")]
+        [HttpGet("{id}")]
         [Produces("application/json")]
         [AllowAnonymous]
         public async Task<IActionResult> FindByIdAsync(Guid id)

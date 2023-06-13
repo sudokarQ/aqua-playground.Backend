@@ -31,7 +31,7 @@ namespace AquaPlayground.Backend.Tests
 
         private static OrderPostDto _orderPostDto = new OrderPostDto
         {
-            Status = Common.Enums.OrderStatus.Accepted,
+            Status = Common.Enums.OrderStatus.Ordered,
             DeliveryAdress = "adress",
             ServicesId = new List<Guid>
             {
@@ -44,7 +44,7 @@ namespace AquaPlayground.Backend.Tests
         private static Order order = new Order
         {
             Id = Guid.NewGuid(),
-            Status = Common.Enums.OrderStatus.Accepted,
+            Status = Common.Enums.OrderStatus.Ordered,
             DeliveryAdress = "adress",
             User = _user,
             // Set properties of the order object
@@ -72,7 +72,7 @@ namespace AquaPlayground.Backend.Tests
 
             var orderPostDto = new OrderPostDto
             {
-                Status = Common.Enums.OrderStatus.Accepted,
+                Status = Common.Enums.OrderStatus.Ordered,
                 DeliveryAdress = "adress",
                 ServicesId = new List<Guid> { serviceId1, serviceId2 }
             };

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AquaPlayground.Backend.Web.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class OrderController : Controller
     {
@@ -20,7 +21,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost("CreateOrder")]
+        [HttpPost]
         [Produces("application/json")]
         [Authorize]
         public async Task<IActionResult> CreateAsync(OrderPostDto orderPostDto)
@@ -39,7 +40,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAsync()
@@ -56,14 +57,14 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetListByUserId")]
+        [HttpGet("userId")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListByUserIdAsync(string id)
+        public async Task<IActionResult> GetListByUserIdAsync([FromQuery] string userId)
         {
             try
             {
-                var orders = await _orderService.GetListByUserIdAsync(id);
+                var orders = await _orderService.GetListByUserIdAsync(userId);
 
                 return Ok(orders);
             }
@@ -73,14 +74,14 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetListByDate")]
+        [HttpGet("Dates")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListByDatesAsync(DateTime? begin, DateTime? end, string? id)
+        public async Task<IActionResult> GetListByDatesAsync(DateTime? begin, DateTime? end, string? userId)
         {
             try
             {
-                var orders = await _orderService.GetListByDatesAsync(begin, end, id);
+                var orders = await _orderService.GetListByDatesAsync(begin, end, userId);
 
                 return Ok(orders);
             }
@@ -90,7 +91,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("GetMyOrders")]
+        [HttpGet("MyOrders")]
         [Produces("application/json")]
         [Authorize]
         public async Task<IActionResult> GetListByDatesAsync(DateTime? begin, DateTime? end)
@@ -109,7 +110,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpGet("FindOrder")]
+        [HttpGet("{id}")]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> FindByIdAsync(Guid id)
@@ -126,7 +127,7 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
         }
 
-        [HttpDelete("DeleteOrder")]
+        [HttpDelete]
         [Produces("application/json")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(Guid id)

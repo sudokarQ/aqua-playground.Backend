@@ -7,7 +7,7 @@ namespace AquaPlayground.Backend.Common.Models.Dto.Order
     {
         public Guid Id { get; set; }
 
-        public string UserSurname { get; set; }
+        public string PhoneNumber { get; set; }
 
         public string DeliveryAdress { get; set; }
 

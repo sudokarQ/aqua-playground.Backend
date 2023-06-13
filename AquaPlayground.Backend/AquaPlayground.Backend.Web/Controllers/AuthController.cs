@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AquaPlayground.Backend.Web.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
+
         private readonly IMapper _mapper;
+        
         private readonly IAuthService _authManager;
 
         public AuthController(UserManager<User> userManager, IMapper mapper, IAuthService authManager)

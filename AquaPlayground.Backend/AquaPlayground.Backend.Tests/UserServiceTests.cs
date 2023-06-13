@@ -114,14 +114,10 @@
             // Arrange
             var dto = new UserUpdateDto
             {
-                Email = "john@example.com",
                 Name = "John Doe",
                 Surname = "Doe"
             };
             var user = new User { Id = "1", Email = "john@example.com" };
-
-            _userRepositoryMock.Setup(repo => repo.AnyAsync(u => u.Email == dto.Email))
-                .ReturnsAsync(false);
 
             _userManagerMock.Setup(manager => manager.UpdateAsync(user))
                 .ReturnsAsync(IdentityResult.Success);
@@ -133,23 +129,22 @@
             Assert.IsTrue(result.Succeeded);
         }
 
-        [Test]
-        public async Task UpdateUserAsync_ReturnsFailedResult_WhenEmailAlreadyTaken()
-        {
-            // Arrange
-            var dto = new UserUpdateDto { Email = "john@example.com" };
-            var user = new User { Id = "1", Email = "john@example.com" };
+        //[Test]
+        //public async Task UpdateUserAsync_ReturnsFailedResult_WhenEmailAlreadyTaken()
+        //{
+        //    // Arrange
+        //    var user = new User { Id = "1", Email = "john@example.com" };
 
-            _userRepositoryMock.Setup(repo => repo.AnyAsync(u => u.Email == dto.Email))
-                .ReturnsAsync(true);
+        //    _userRepositoryMock.Setup(repo => repo.AnyAsync(u => u.Email == dto.Email))
+        //        .ReturnsAsync(true);
 
-            // Act
-            var result = await _userService.UpdateUserAsync(dto, user);
+        //    // Act
+        //    var result = await _userService.UpdateUserAsync(dto, user);
 
-            // Assert
-            Assert.IsFalse(result.Succeeded);
-            Assert.AreEqual("Email is already taken", result.Errors.First().Description);
-        }
+        //    // Assert
+        //    Assert.IsFalse(result.Succeeded);
+        //    Assert.AreEqual("Email is already taken", result.Errors.First().Description);
+        //}
 
         [Test]
         public async Task DeleteUserAsync_ReturnsSuccessResult_WhenDeleteSuccessful()
