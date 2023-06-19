@@ -125,6 +125,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
                 
                 temp.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
                 {
+                    Id = os.Service.Id,
                     Name = os.Service.Name,
                     Price = os.Service.Price
                 }).ToList();
