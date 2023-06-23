@@ -1,35 +1,38 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.Order;
-using AquaPlayground.Backend.Common.Models.Dto.Service;
-using AquaPlayground.Backend.Common.Models.Entity;
-using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using AutoMapper;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Services
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
+    using AutoMapper;
+
+    using Common.Models.Dto.Order;
+    using Common.Models.Dto.Service;
+    using Common.Models.Entity;
+
+    using DataLayer.Repositories.Interfaces;
+
+    using Intefaces;
+
     public class OrderService : IOrderService
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderRepository orderRepository;
 
-        private readonly IMapper _mapper;
+        private readonly IMapper mapper;
 
-        private readonly IServiceRepository _serviceRepository;
+        private readonly IServiceRepository serviceRepository;
 
         public OrderService(IOrderRepository orderRepository, IMapper mapper, IServiceRepository serviceRepository)
         {
-            _orderRepository = orderRepository;
-            _mapper = mapper;
-            _serviceRepository = serviceRepository;
+            this.orderRepository = orderRepository;
+            this.mapper = mapper;
+            this.serviceRepository = serviceRepository;
         }
 
         public async Task CreateAsync(OrderPostDto orderDto, string userId)
         {
-            var order = _mapper.Map<Order>(orderDto);
+            var order = mapper.Map<Order>(orderDto);
 
             decimal sum = 0;
             foreach (var serviceId in orderDto.ServicesId)
             {
-                var service = await _serviceRepository.FindByIdAsync(serviceId);
+                var service = await serviceRepository.FindByIdAsync(serviceId);
                 if (service != null)
                 {
                     var orderService = new Common.Models.Entity.OrderService { Order = order, ServiceId = serviceId };
@@ -43,15 +46,15 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             order.DateTime = DateTime.Now;
             order.TotalPrice = sum;
 
-            await _orderRepository.CreateAsync(order);
+            await orderRepository.CreateAsync(order);
         }
 
 
         public async Task<OrderGetDto> FindByIdAsync(Guid id)
         {
-            var order = await _orderRepository.FindByIdAsync(id);
+            var order = await orderRepository.FindByIdAsync(id);
 
-            var result = _mapper.Map<OrderGetDto>(order);
+            var result = mapper.Map<OrderGetDto>(order);
 
             result.PhoneNumber = order.User.PhoneNumber;
 
@@ -65,13 +68,13 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task<List<OrderGetDto>> GetAllAsync()
         {
-            var orders = await _orderRepository.GetAllAsync();
+            var orders = await orderRepository.GetAllAsync();
 
             var result = new List<OrderGetDto>();
 
             foreach (var order in orders)
             {
-                var temp = _mapper.Map<OrderGetDto>(order);
+                var temp = mapper.Map<OrderGetDto>(order);
 
                 temp.PhoneNumber = order.User.PhoneNumber;
 
@@ -89,13 +92,13 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task<List<OrderGetDto>> GetListByUserIdAsync(string id)
         {
-            var orders = await _orderRepository.GetByUserIdAsync(id);
+            var orders = await orderRepository.GetByUserIdAsync(id);
 
             var result = new List<OrderGetDto>();
 
             foreach (var order in orders)
             {
-                var temp = _mapper.Map<OrderGetDto>(order);
+                var temp = mapper.Map<OrderGetDto>(order);
 
                 temp.PhoneNumber = order.User.PhoneNumber;
 
@@ -113,16 +116,22 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task<List<OrderGetDto>> GetListByDatesAsync(DateTime? begin, DateTime? end, string? id)
         {
-            var orders = await _orderRepository.FindByDateAsync(begin, end, id);
+            if (begin is not null)
+                begin = begin.Value.AddDays(1);
+
+            if (end is not null)
+                end = end.Value.AddDays(1);
+
+            var orders = await orderRepository.FindByDateAsync(begin, end, id);
 
             var result = new List<OrderGetDto>();
 
             foreach (var order in orders)
             {
-                var temp = _mapper.Map<OrderGetDto>(order);
+                var temp = mapper.Map<OrderGetDto>(order);
 
                 temp.PhoneNumber = order.User.PhoneNumber;
-                
+
                 temp.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
                 {
                     Id = os.Service.Id,
@@ -138,7 +147,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task RemoveAsync(Guid id)
         {
-            var order = await _orderRepository.FindByIdAsync(id);
+            var order = await orderRepository.FindByIdAsync(id);
 
             if (order is null)
             {
@@ -150,7 +159,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
                 orderService.Service = null;
             }
 
-            await _orderRepository.RemoveAsync(order);
+            await orderRepository.RemoveAsync(order);
         }
 
         public async Task<bool> DoesOrderExist(Order order, string userId)

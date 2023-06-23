@@ -1,25 +1,28 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.User;
-using AquaPlayground.Backend.Common.Models.Entity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Services
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using System.Text;
+
+    using Common.Models.Dto.User;
+    using Common.Models.Entity;
+
+    using Intefaces;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.IdentityModel.Tokens;
+
     public class AuthService : IAuthService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly IConfiguration _configuration;
-        private User _user;
+        private readonly UserManager<User> userManager;
+        private readonly IConfiguration configuration;
+        private User user;
 
         public AuthService(UserManager<User> userManager, IConfiguration configuration)
         {
-            _userManager = userManager;
-            _configuration = configuration;
+            this.userManager = userManager;
+            this.configuration = configuration;
         }
 
         public async Task<string> CreateToken()
@@ -33,7 +36,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         private JwtSecurityToken GenerateTokenOption(SigningCredentials signingCredentials, List<Claim> claims)
         {
-            var jwtSettings = _configuration.GetSection("Jwt");
+            var jwtSettings = configuration.GetSection("Jwt");
 
             var expiration = DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("lifetime").Value));
 
@@ -52,11 +55,11 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, _user.Id)
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
-            var roles = await _userManager.GetRolesAsync(_user);
+            var roles = await userManager.GetRolesAsync(user);
 
             foreach (var role in roles)
             {
@@ -76,8 +79,20 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task<bool> ValidateUser(UserLoginDto loginUserDto)
         {
-            _user = await _userManager.FindByNameAsync(loginUserDto.Email);
-            return _user is not null && await _userManager.CheckPasswordAsync(_user, loginUserDto.Password);
+            user = await userManager.FindByNameAsync(loginUserDto.Email);
+            return user is not null && await userManager.CheckPasswordAsync(user, loginUserDto.Password);
+        }
+
+        public async Task<bool> IsAdmin(UserLoginDto loginUserDto)
+        {
+            user = await userManager.FindByNameAsync(loginUserDto.Email);
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            if (roles.Contains("Admin"))
+                return true;
+
+            return false;
         }
     }
 }

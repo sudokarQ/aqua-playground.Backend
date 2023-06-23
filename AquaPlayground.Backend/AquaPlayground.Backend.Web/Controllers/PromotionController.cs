@@ -1,19 +1,21 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.Promotion;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AquaPlayground.Backend.Web.Controllers
+﻿namespace AquaPlayground.Backend.Web.Controllers
 {
+    using BuisnessLayer.Intefaces;
+
+    using Common.Models.Dto.Promotion;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/[controller]")]
     [ApiController]
     public class PromotionController : Controller
     {
-        private readonly IPromotionService _promotionService;
+        private readonly IPromotionService promotionService;
 
         public PromotionController(IPromotionService promotionService)
         {
-            _promotionService = promotionService;
+            this.promotionService = promotionService;
         }
 
         [HttpGet]
@@ -23,7 +25,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var promotions = await _promotionService.GetAllAsync();
+                var promotions = await promotionService.GetAllAsync();
 
                 return Ok(promotions);
             }
@@ -40,7 +42,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var promotions = await _promotionService.GetListByNameAsync(name);
+                var promotions = await promotionService.GetListByNameAsync(name);
 
                 return Ok(promotions);
             }
@@ -57,7 +59,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                await _promotionService.CreateAsync(promotionPostDto);
+                await promotionService.CreateAsync(promotionPostDto);
 
                 return Ok();
             }
@@ -74,7 +76,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                await _promotionService.RemoveAsync(id);
+                await promotionService.RemoveAsync(id);
 
                 return Ok();
             }
@@ -91,7 +93,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                await _promotionService.UpdateAsync(dto);
+                await promotionService.UpdateAsync(dto);
 
                 return Ok();
             }
@@ -108,7 +110,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var promotionDto = await _promotionService.FindByIdAsync(id);
+                var promotionDto = await promotionService.FindByIdAsync(id);
 
                 return Ok(promotionDto);
             }

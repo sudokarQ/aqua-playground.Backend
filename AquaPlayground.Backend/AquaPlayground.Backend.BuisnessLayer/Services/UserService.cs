@@ -1,59 +1,63 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.User;
-using AquaPlayground.Backend.Common.Models.Entity;
-using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Services
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
+    using AutoMapper;
+
+    using Common.Models.Dto.User;
+    using Common.Models.Entity;
+
+    using DataLayer.Repositories.Interfaces;
+
+    using Intefaces;
+
+    using Microsoft.AspNetCore.Identity;
+
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository userRepository;
 
-        private readonly IMapper _mapper;
+        private readonly IMapper mapper;
 
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<User> userManager;
 
         public UserService(IUserRepository userRepository, IMapper mapper, UserManager<User> userManager)
         {
-            _userRepository = userRepository;
-            _mapper = mapper;
-            _userManager = userManager;
+            this.userRepository = userRepository;
+            this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         public async Task<List<UserGetDto>> GetAllAsync()
         {
-            var users = await _userRepository.GetAllAsync();
-            
-            var result = _mapper.Map<List<UserGetDto>>(users);
+            var users = await userRepository.GetAllAsync();
+
+            var result = mapper.Map<List<UserGetDto>>(users);
 
             return result;
         }
 
         public async Task<UserGetDto> FindByIdAsync(string id)
         {
-            var user = await _userRepository.FindByIdAsync(id);
+            var user = await userRepository.FindByIdAsync(id);
 
-            var result = _mapper.Map<UserGetDto>(user);
+            var result = mapper.Map<UserGetDto>(user);
 
             return result;
         }
 
         public async Task<List<UserGetDto>> FindByLoginAsync(string login)
         {
-            var users = await _userRepository.FindByLoginAsync(login);
+            var users = await userRepository.FindByLoginAsync(login);
 
-            var result = _mapper.Map<List<UserGetDto>>(users);
+            var result = mapper.Map<List<UserGetDto>>(users);
 
             return result;
         }
 
         public async Task<List<UserGetDto>> FindByNameAsync(string name)
         {
-            var users = await _userRepository.FindByNameAsync(name);
+            var users = await userRepository.FindByNameAsync(name);
 
-            var result = _mapper.Map<List<UserGetDto>>(users);
+            var result = mapper.Map<List<UserGetDto>>(users);
 
             return result;
         }
@@ -62,7 +66,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
         {
             if (!string.IsNullOrWhiteSpace(dto.Password))
             {
-                var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, dto.Password);
+                var newPasswordHash = userManager.PasswordHasher.HashPassword(user, dto.Password);
 
                 user.PasswordHash = newPasswordHash ?? user.PasswordHash;
             }
@@ -82,14 +86,14 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
                 user.PhoneNumber = dto.PhoneNumber;
             }
 
-            var result = await _userManager.UpdateAsync(user);
+            var result = await userManager.UpdateAsync(user);
 
             return result;
         }
 
         public async Task<IdentityResult> DeleteUserAsync(User user)
         {
-            var result = await _userManager.DeleteAsync(user);
+            var result = await userManager.DeleteAsync(user);
 
             return result;
         }

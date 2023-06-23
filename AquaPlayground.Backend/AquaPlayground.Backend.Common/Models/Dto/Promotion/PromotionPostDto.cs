@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AquaPlayground.Backend.Common.Models.Dto.Promotion
+﻿namespace AquaPlayground.Backend.Common.Models.Dto.Promotion
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class PromotionPostDto : IPromotionDto
     {
         [Required]

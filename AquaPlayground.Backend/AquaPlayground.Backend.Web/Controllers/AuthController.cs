@@ -1,27 +1,30 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.User;
-using AquaPlayground.Backend.Common.Models.Entity;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AquaPlayground.Backend.Web.Controllers
+﻿namespace AquaPlayground.Backend.Web.Controllers
 {
+    using AutoMapper;
+
+    using BuisnessLayer.Intefaces;
+
+    using Common.Models.Dto.User;
+    using Common.Models.Entity;
+
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<User> userManager;
 
-        private readonly IMapper _mapper;
-        
-        private readonly IAuthService _authManager;
+        private readonly IMapper mapper;
+
+        private readonly IAuthService authManager;
 
         public AuthController(UserManager<User> userManager, IMapper mapper, IAuthService authManager)
         {
-            _userManager = userManager;
-            _mapper = mapper;
-            _authManager = authManager;
+            this.userManager = userManager;
+            this.mapper = mapper;
+            this.authManager = authManager;
         }
 
         [HttpPost("register")]
@@ -33,10 +36,10 @@ namespace AquaPlayground.Backend.Web.Controllers
             }
             try
             {
-                var user = _mapper.Map<User>(dto);
+                var user = mapper.Map<User>(dto);
                 user.UserName = dto.Email;
 
-                var result = await _userManager.CreateAsync(user, dto.Password);
+                var result = await userManager.CreateAsync(user, dto.Password);
 
                 if (!result.Succeeded)
                 {
@@ -48,7 +51,7 @@ namespace AquaPlayground.Backend.Web.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _userManager.AddToRolesAsync(user, dto.Roles);
+                await userManager.AddToRolesAsync(user, dto.Roles);
 
                 return Accepted();
             }
@@ -70,14 +73,15 @@ namespace AquaPlayground.Backend.Web.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             try
             {
-                if (!await _authManager.ValidateUser(dto))
+                if (!await authManager.ValidateUser(dto))
                 {
                     return Unauthorized(dto);
                 }
 
-                return Accepted(new { Token = await _authManager.CreateToken() });
+                return Accepted(new { Token = await authManager.CreateToken(), IsAdmin = await authManager.IsAdmin(dto) });
             }
             catch (Exception)
             {

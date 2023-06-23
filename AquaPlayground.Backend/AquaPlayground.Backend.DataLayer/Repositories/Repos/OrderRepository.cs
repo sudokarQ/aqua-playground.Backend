@@ -1,57 +1,49 @@
-﻿using AquaPlayground.Backend.Common.Models.Entity;
-using AquaPlayground.Backend.Common.Enums;
-using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace AquaPlayground.Backend.DataLayer.Repositories.Repos
+﻿namespace AquaPlayground.Backend.DataLayer.Repositories.Repos
 {
+    using Common.Enums;
+    using Common.Models.Entity;
+
+    using Microsoft.EntityFrameworkCore;
+
+    using Repositories.Interfaces;
+
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
-        private readonly SqlContext _context;
-        private readonly DbSet<Order> _dbSet;
+        private readonly SqlContext context;
+
+        private readonly DbSet<Order> dbSet;
 
         public OrderRepository(SqlContext context) : base(context)
         {
-            _context = context;
-            _dbSet = context.Set<Order>();
+            this.context = context;
+            this.dbSet = context.Set<Order>();
         }
 
         public async Task CreateOrderForCart(Order order, string userId)
         {
-            _context.Entry(order.User).State = EntityState.Detached;
+            context.Entry(order.User).State = EntityState.Detached;
 
-            order.UserId = userId; 
+            order.UserId = userId;
 
-            await _dbSet.AddAsync(order);
-            await _context.SaveChangesAsync();
+            await dbSet.AddAsync(order);
+            await context.SaveChangesAsync();
         }
 
-        //public new async Task UpdateAsync(Order order)
-        //{
-        //    foreach (var item in order.OrderServices)
-        //    {
-        //        _context.Entry(item.Service).State = EntityState.Detached;
-        //    }
-
-        //    _dbSet.Update(order);
-        //    await _context.SaveChangesAsync();
-        //}
-
         public async Task<List<Order>> GetAllAsync()
-            => await _dbSet.AsNoTracking()
+            => await dbSet.AsNoTracking()
                 .Include(x => x.OrderServices)
                 .ThenInclude(xs => xs.Service)
                 .Include(x => x.User).ToListAsync();
 
         public async Task<Order> FindByIdAsync(Guid id)
-            => await _dbSet.AsNoTracking()
+            => await dbSet.AsNoTracking()
             .Include(x => x.OrderServices)
             .ThenInclude(xs => xs.Service)
             .Include(x => x.User)
             .FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<List<Order>> GetByUserIdAsync(string id)
-            => await _dbSet
+            => await dbSet
             .Include(x => x.User)
             .Include(x => x.OrderServices)
             .ThenInclude(xs => xs.Service)
@@ -60,7 +52,7 @@ namespace AquaPlayground.Backend.DataLayer.Repositories.Repos
             .ToListAsync();
 
         public async Task<Order> GetClientCart(string id)
-            => await _dbSet
+            => await dbSet
             .Include(x => x.User)
             .Include(x => x.OrderServices)
             .ThenInclude(xs => xs.Service)
@@ -69,7 +61,7 @@ namespace AquaPlayground.Backend.DataLayer.Repositories.Repos
 
         public async Task<List<Order>> FindByDateAsync(DateTime? begin, DateTime? end, string id)
         {
-            IQueryable<Order> query = _dbSet
+            IQueryable<Order> query = dbSet
                 .Where(x => x.Status == OrderStatus.Ordered)
                 .Include(x => x.User)
                 .Include(x => x.OrderServices)

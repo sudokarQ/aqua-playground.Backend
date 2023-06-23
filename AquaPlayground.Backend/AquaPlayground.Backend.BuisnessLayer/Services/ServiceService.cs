@@ -1,33 +1,36 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.Service;
-using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Services
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
+    using Common.Models.Dto.Service;
+
+    using DataLayer.Repositories.Interfaces;
+
+    using Intefaces;
+
+
     public class ServiceService : IServiceService
     {
-        private readonly IServiceRepository _serviceRepository;
+        private readonly IServiceRepository serviceRepository;
 
 
         public ServiceService(IServiceRepository serviceRepository)
         {
-            _serviceRepository = serviceRepository;
+            this.serviceRepository = serviceRepository;
         }
 
         public async Task CreateAsync(ServicePostDto service)
         {
-            await _serviceRepository.CreateAsync(new()
-                {
-                    Name = service.Name,
-                    TypeService = service.TypeService,
-                    Price = service.Price,
-                    Description = service.Description,
-                });
+            await serviceRepository.CreateAsync(new()
+            {
+                Name = service.Name,
+                TypeService = service.TypeService,
+                Price = service.Price,
+                Description = service.Description,
+            });
         }
 
         public async Task<List<ServiceGetDto>> GetAllAsync()
         {
-            var services = await _serviceRepository.GetAllAsync();
+            var services = await serviceRepository.GetAllAsync();
             var result = new List<ServiceGetDto>();
 
             foreach (var service in services)
@@ -49,7 +52,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task<List<ServiceGetDto>?> FindByIdAsync(Guid id)
         {
-            var service = await _serviceRepository.FindByIdAsync(id);
+            var service = await serviceRepository.FindByIdAsync(id);
 
 
             return service is null ? null :
@@ -68,7 +71,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task<List<ServiceGetDto>> GetListByNameAsync(string name)
         {
-            var services = await _serviceRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
+            var services = await serviceRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
 
             return services.Select(x => new ServiceGetDto
             {
@@ -82,19 +85,19 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task RemoveAsync(Guid id)
         {
-            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var service = await serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
 
             if (service is null)
             {
                 throw new ArgumentNullException("Service not found");
             }
 
-            await _serviceRepository.RemoveAsync(service);
+            await serviceRepository.RemoveAsync(service);
         }
 
         public async Task UpdateAsync(ServicePutDto dto)
         {
-            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
+            var service = await serviceRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
             if (service is null)
             {
@@ -105,7 +108,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             service.Description = dto.Description ?? service.Description;
             service.Price = dto.Price ?? service.Price;
 
-            await _serviceRepository.UpdateAsync(service);
+            await serviceRepository.UpdateAsync(service);
         }
     }
 }

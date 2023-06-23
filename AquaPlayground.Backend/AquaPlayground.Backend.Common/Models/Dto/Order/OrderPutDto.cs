@@ -1,8 +1,9 @@
-﻿using AquaPlayground.Backend.Common.Enums;
-using System.ComponentModel.DataAnnotations;
-
-namespace AquaPlayground.Backend.Common.Models.Dto.Order
+﻿namespace AquaPlayground.Backend.Common.Models.Dto.Order
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using Enums;
+
     public class OrderPutDto
     {
         [Required]

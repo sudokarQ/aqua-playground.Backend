@@ -1,24 +1,24 @@
-﻿using AquaPlayground.Backend.Common.Models.Dto.Order;
-
-namespace AquaPlayground.Backend.Tests
+﻿namespace AquaPlayground.Backend.Tests
 {
+    using Common.Models.Dto.Order;
+    
     [TestFixture]
     public class CartServiceTests
     {
-        private IOrderService _orderService;
+        private IOrderService orderService;
 
-        private ICartService _cartService;
+        private ICartService cartService;
 
-        private Mock<IOrderRepository> _orderRepositoryMock;
+        private Mock<IOrderRepository> orderRepositoryMock;
 
-        private Mock<IServiceRepository> _serviceRepositoryMock;
+        private Mock<IServiceRepository> serviceRepositoryMock;
 
-        private Mock<IOrderServiceRepository> _orderServiceRepositoryMock;
+        private Mock<IOrderServiceRepository> orderServiceRepositoryMock;
 
-        private Mock<IMapper> _mapperMock;
+        private Mock<IMapper> mapperMock;
 
 
-        private static User _user = new User
+        private static User user = new User
         {
             Id = "1",
             Name = "John",
@@ -31,54 +31,42 @@ namespace AquaPlayground.Backend.Tests
             new Service { Id = Guid.NewGuid(), Price = 15 }
         };
 
-        private static OrderPostDto _orderPostDto = new OrderPostDto
-        {
-            Status = Common.Enums.OrderStatus.Ordered,
-            DeliveryAdress = "adress",
-            ServicesId = new List<Guid>
-            {
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-
-            }
-        };
-
         private static Order order = new Order
         {
             Id = Guid.NewGuid(),
             Status = Common.Enums.OrderStatus.Ordered,
             DeliveryAdress = "adress",
-            User = _user,
+            User = user,
         };
 
         [SetUp]
         public void Setup()
         {
-            _orderRepositoryMock = new Mock<IOrderRepository>();
+            orderRepositoryMock = new Mock<IOrderRepository>();
 
-            _serviceRepositoryMock = new Mock<IServiceRepository>();
+            serviceRepositoryMock = new Mock<IServiceRepository>();
             
-            _orderServiceRepositoryMock = new Mock<IOrderServiceRepository>();
+            orderServiceRepositoryMock = new Mock<IOrderServiceRepository>();
             
-            _mapperMock = new Mock<IMapper>();
+            mapperMock = new Mock<IMapper>();
             
-            _orderService = new BuisnessLayer.Services.OrderService(_orderRepositoryMock.Object, _mapperMock.Object, _serviceRepositoryMock.Object);
+            orderService = new BuisnessLayer.Services.OrderService(orderRepositoryMock.Object, mapperMock.Object, serviceRepositoryMock.Object);
             
-            _cartService = new CartService(_orderRepositoryMock.Object, _mapperMock.Object, _serviceRepositoryMock.Object, _orderServiceRepositoryMock.Object, _orderService);
+            cartService = new CartService(orderRepositoryMock.Object, mapperMock.Object, serviceRepositoryMock.Object, orderServiceRepositoryMock.Object, orderService);
         }
         
         [Test]
-        public async Task GetClientCart_ShouldReturnListOfOrderGetDto()
+        public async Task GetClientCartShouldReturnListOfOrderGetDto()
         {
             // Arrange
             var clientId = "1";
             var testOrder = order;
 
-            _orderRepositoryMock
+            orderRepositoryMock
                 .Setup(r => r.GetClientCart(clientId))
                 .ReturnsAsync(testOrder);
 
-            _mapperMock
+            mapperMock
                 .Setup(m => m.Map<OrderGetDto>(It.IsAny<Order>()))
                 .Returns<Order>(order => new OrderGetDto
                 {
@@ -86,16 +74,16 @@ namespace AquaPlayground.Backend.Tests
                 });
 
             // Act
-            var result = await _cartService.GetClientCart(clientId);
+            var result = await cartService.GetClientCart(clientId);
 
             // Assert
             Assert.NotNull(result);
 
-            _orderRepositoryMock.Verify(r => r.GetClientCart(clientId), Times.Once);
+            orderRepositoryMock.Verify(r => r.GetClientCart(clientId), Times.Once);
         }
 
         [Test]
-        public async Task AddServiceToCart_ExistingService_ShouldAddServiceToOrder()
+        public async Task AddServiceToCartExistingServiceShouldAddServiceToOrder()
         {
             // Arrange
             var serviceId = Guid.NewGuid();
@@ -103,28 +91,28 @@ namespace AquaPlayground.Backend.Tests
             var order = new Order { Id = Guid.NewGuid() };
             var service = new Service { Id = serviceId, Price = 20 };
 
-            _orderRepositoryMock
+            orderRepositoryMock
                 .Setup(r => r.GetClientCart(userId))
                 .ReturnsAsync(order);
 
-            _serviceRepositoryMock
+            serviceRepositoryMock
                 .Setup(s => s.FindByIdAsync(serviceId))
                 .ReturnsAsync(service);
 
             // Act
-            await _cartService.AddServiceToCart(serviceId, userId);
+            await cartService.AddServiceToCart(serviceId, userId);
 
             // Assert
             Assert.AreEqual(20, order.TotalPrice);
 
-            _orderRepositoryMock.Verify(r => r.GetClientCart(userId), Times.Once);
-            _serviceRepositoryMock.Verify(s => s.FindByIdAsync(serviceId), Times.Once);
-            _orderServiceRepositoryMock.Verify(r => r.CreateAsync(It.IsAny<Common.Models.Entity.OrderService>()), Times.Once);
-            _orderRepositoryMock.Verify(r => r.UpdateAsync(order), Times.Once);
+            orderRepositoryMock.Verify(r => r.GetClientCart(userId), Times.Once);
+            serviceRepositoryMock.Verify(s => s.FindByIdAsync(serviceId), Times.Once);
+            orderServiceRepositoryMock.Verify(r => r.CreateAsync(It.IsAny<Common.Models.Entity.OrderService>()), Times.Once);
+            orderRepositoryMock.Verify(r => r.UpdateAsync(order), Times.Once);
         }
 
         [Test]
-        public async Task OrderFromCart_ValidOrder_ShouldReturnOrderedOrder()
+        public async Task OrderFromCartValidOrderShouldReturnOrderedOrder()
         {
             // Arrange
             var userId = "1";
@@ -141,12 +129,12 @@ namespace AquaPlayground.Backend.Tests
             }
             };
 
-            _orderRepositoryMock
+            orderRepositoryMock
                 .Setup(r => r.GetClientCart(userId))
                 .ReturnsAsync(order);
 
             // Act
-            var result = await _cartService.OrderFromCart(userId, address);
+            var result = await cartService.OrderFromCart(userId, address);
 
             // Assert
             Assert.AreEqual(Common.Enums.OrderStatus.Ordered, result.Status);
@@ -154,12 +142,12 @@ namespace AquaPlayground.Backend.Tests
             Assert.AreEqual(address, result.DeliveryAdress);
             Assert.AreNotEqual(DateTime.MinValue, result.DateTime);
 
-            _orderRepositoryMock.Verify(r => r.GetClientCart(userId), Times.Once);
-            _orderRepositoryMock.Verify(r => r.UpdateAsync(order), Times.Once);
+            orderRepositoryMock.Verify(r => r.GetClientCart(userId), Times.Once);
+            orderRepositoryMock.Verify(r => r.UpdateAsync(order), Times.Once);
         }
 
         [Test]
-        public async Task OrderFromCart_ShouldReturnOrderNoServices()
+        public async Task OrderFromCartShouldReturnOrderNoServices()
         {
             // Arrange
             var userId = "1";
@@ -170,14 +158,14 @@ namespace AquaPlayground.Backend.Tests
                 Id = id,
             };
 
-            _orderRepositoryMock
+            orderRepositoryMock
                 .Setup(r => r.GetClientCart(userId))
                 .ReturnsAsync(order);
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(async () => await _cartService.OrderFromCart(userId, address));
+            Assert.ThrowsAsync<ArgumentException>(async () => await cartService.OrderFromCart(userId, address));
 
-            _orderRepositoryMock.Verify(r => r.GetClientCart(userId), Times.Once);
+            orderRepositoryMock.Verify(r => r.GetClientCart(userId), Times.Once);
         }
     }
 }

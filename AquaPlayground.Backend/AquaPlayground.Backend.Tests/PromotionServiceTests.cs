@@ -3,11 +3,11 @@
     [TestFixture]
     public class PromotionServiceTests
     {
-        private IPromotionService _promotionService;
+        private IPromotionService promotionService;
         
-        private Mock<IPromotionRepository> _promotionRepositoryMock;
+        private Mock<IPromotionRepository> promotionRepositoryMock;
         
-        private Mock<IMapper> _mapperMock;
+        private Mock<IMapper> mapperMock;
 
         public static readonly PromotionPostDto ValidDto = new PromotionPostDto
         {
@@ -19,7 +19,7 @@
             ServiceId = Guid.NewGuid()
         };
 
-        public static readonly PromotionPostDto InvalidDto_InvalidDiscount = new PromotionPostDto
+        public static readonly PromotionPostDto InvalidDtoInvalidDiscount = new PromotionPostDto
         {
             Name = "Invalid Discount Promotion",
             Description = "This promotion has an invalid discount",
@@ -43,111 +43,111 @@
         [SetUp]
         public void Setup()
         {
-            _promotionRepositoryMock = new Mock<IPromotionRepository>();
-            _mapperMock = new Mock<IMapper>();
-            _promotionService = new PromotionService(_promotionRepositoryMock.Object, _mapperMock.Object);
+            promotionRepositoryMock = new Mock<IPromotionRepository>();
+            mapperMock = new Mock<IMapper>();
+            promotionService = new PromotionService(promotionRepositoryMock.Object, mapperMock.Object);
         }
 
         [Test]
-        public async Task CreateAsync_ValidPromotion_CallsRepositoryCreateAsync()
+        public async Task CreateAsyncValidPromotionCallsRepositoryCreateAsync()
         {
             // Arrange
             var promotion = ValidDto;
-            _mapperMock
+            mapperMock
                 .Setup(m => m.Map<Promotion>(It.IsAny<PromotionPostDto>()))
                 .Returns(new Promotion());
 
             // Act
-            await _promotionService.CreateAsync(promotion);
+            await promotionService.CreateAsync(promotion);
 
             // Assert
-            _promotionRepositoryMock.Verify(r => r.CreateAsync(It.IsAny<Promotion>()), Times.Once);
+            promotionRepositoryMock.Verify(r => r.CreateAsync(It.IsAny<Promotion>()), Times.Once);
         }
 
         [Test]
-        public void CreateAsync_InvalidPromotion_ThrowsValidationException()
+        public void CreateAsyncInvalidPromotionThrowsValidationException()
         {
             // Arrange
-            var promotion = InvalidDto_InvalidDiscount;
+            var promotion = InvalidDtoInvalidDiscount;
 
             // Act & Assert
-            Assert.ThrowsAsync<ValidationException>(() => _promotionService.CreateAsync(promotion));
+            Assert.ThrowsAsync<ValidationException>(() => promotionService.CreateAsync(promotion));
         }
 
         [Test]
-        public async Task GetAllAsync_ReturnsListOfPromotionGetDto()
+        public async Task GetAllAsyncReturnsListOfPromotionGetDto()
         {
             // Arrange
             var promotions = new List<Promotion> { validPromotion, validPromotion};
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.GetAllAsync())
                 .ReturnsAsync(promotions);
-            _mapperMock
+            mapperMock
                 .Setup(m => m.Map<List<PromotionGetDto>>(promotions))
                 .Returns(new List<PromotionGetDto>());
 
             // Act
-            var result = await _promotionService.GetAllAsync();
+            var result = await promotionService.GetAllAsync();
 
             // Assert
             Assert.IsInstanceOf<List<PromotionGetDto>>(result);
         }
 
         [Test]
-        public async Task GetListByNameAsync_ReturnsListOfPromotionGetDto()
+        public async Task GetListByNameAsyncReturnsListOfPromotionGetDto()
         {
             // Arrange
             var name = "promotion name";
             var promotions = new List<Promotion> { validPromotion, validPromotion };
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.GetListByNameAsync(name))
                 .ReturnsAsync(promotions);
-            _mapperMock
+            mapperMock
                 .Setup(m => m.Map<List<PromotionGetDto>>(promotions))
                 .Returns(new List<PromotionGetDto>());
 
             // Act
-            var result = await _promotionService.GetListByNameAsync(name);
+            var result = await promotionService.GetListByNameAsync(name);
 
             // Assert
             Assert.IsInstanceOf<List<PromotionGetDto>>(result);
         }
 
         [Test]
-        public async Task FindByIdAsync_ReturnsPromotionGetDto()
+        public async Task FindByIdAsyncReturnsPromotionGetDto()
         {
             // Arrange
             var id = Guid.NewGuid();
             var promotion = new Promotion();
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.FindByIdAsync(id))
                 .ReturnsAsync(promotion);
-            _mapperMock
+            mapperMock
                 .Setup(m => m.Map<PromotionGetDto>(promotion))
                 .Returns(new PromotionGetDto());
 
             // Act
-            var result = await _promotionService.FindByIdAsync(id);
+            var result = await promotionService.FindByIdAsync(id);
 
             // Assert
             Assert.IsInstanceOf<PromotionGetDto>(result);
         }
 
         [Test]
-        public void RemoveAsync_PromotionNotExists_ThrowsArgumentNullException()
+        public void RemoveAsyncPromotionNotExistsThrowsArgumentNullException()
         {
             // Arrange
             var id = Guid.NewGuid();
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.FindByIdAsync(id))
                 .ReturnsAsync((Promotion)null);
 
             // Act & Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _promotionService.RemoveAsync(id));
+            Assert.ThrowsAsync<ArgumentNullException>(() => promotionService.RemoveAsync(id));
         }
 
         [Test]
-        public async Task UpdateAsync_ValidPromotion_UpdatesPromotion()
+        public async Task UpdateAsyncValidPromotionUpdatesPromotion()
         {
             // Arrange
             var promotionId = Guid.NewGuid();
@@ -171,15 +171,15 @@
                 EndDate = DateTime.Now.AddDays(10)
             };
 
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.FindByIdAsync(promotionId))
                 .ReturnsAsync(existingPromotion);
 
             // Act
-            await _promotionService.UpdateAsync(dto);
+            await promotionService.UpdateAsync(dto);
 
             // Assert
-            _promotionRepositoryMock.Verify(r => r.UpdateAsync(It.Is<Promotion>(p =>
+            promotionRepositoryMock.Verify(r => r.UpdateAsync(It.Is<Promotion>(p =>
                 p.Id == promotionId &&
                 p.Name == dto.Name &&
                 p.Description == dto.Description &&
@@ -190,39 +190,39 @@
         }
 
         [Test]
-        public void UpdateAsync_PromotionNotExists_ThrowsArgumentException()
+        public void UpdateAsyncPromotionNotExistsThrowsArgumentException()
         {
             // Arrange
             var promotionId = Guid.NewGuid();
             var dto = new PromotionPutDto { Id = promotionId };
 
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.FindByIdAsync(promotionId))
                 .ReturnsAsync((Promotion)null);
 
             // Act & Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _promotionService.UpdateAsync(dto));
+            Assert.ThrowsAsync<ArgumentException>(() => promotionService.UpdateAsync(dto));
         }
 
         [Test]
-        public async Task RemoveAsync_PromotionExists_CallsRepositoryRemoveAsync()
+        public async Task RemoveAsyncPromotionExistsCallsRepositoryRemoveAsync()
         {
             // Arrange
             var id = Guid.NewGuid();
             var promotion = new Promotion();
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.FindByIdAsync(id))
                 .ReturnsAsync(promotion);
 
             // Act
-            await _promotionService.RemoveAsync(id);
+            await promotionService.RemoveAsync(id);
 
             // Assert
-            _promotionRepositoryMock.Verify(r => r.RemoveAsync(promotion), Times.Once);
+            promotionRepositoryMock.Verify(r => r.RemoveAsync(promotion), Times.Once);
         }
 
         [Test]
-        public void UpdateAsync_InvalidPromotion_ThrowsValidationException()
+        public void UpdateAsyncInvalidPromotionThrowsValidationException()
         {
             // Arrange
             var promotionId = Guid.NewGuid();
@@ -246,12 +246,12 @@
                 EndDate = DateTime.Now.AddDays(10)
             };
 
-            _promotionRepositoryMock
+            promotionRepositoryMock
                 .Setup(r => r.FindByIdAsync(promotionId))
                 .ReturnsAsync(existingPromotion);
 
             // Act & Assert
-            Assert.ThrowsAsync<ValidationException>(() => _promotionService.UpdateAsync(dto));
+            Assert.ThrowsAsync<ValidationException>(() => promotionService.UpdateAsync(dto));
         }
     }
 }

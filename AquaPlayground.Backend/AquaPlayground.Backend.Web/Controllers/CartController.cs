@@ -1,26 +1,26 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Entity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AquaPlayground.Backend.Web.Controllers
+﻿namespace AquaPlayground.Backend.Web.Controllers
 {
+    using BuisnessLayer.Intefaces;
+
+    using Common.Models.Entity;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class CartController : Controller
     {
-        private readonly ICartService _cartService;
+        private readonly ICartService cartService;
 
-        private readonly IServiceService _serviceService;
+        private readonly UserManager<User> userManager;
 
-        private readonly UserManager<User> _userManager;
-
-        public CartController(ICartService cartService, UserManager<User> userManager, IServiceService serviceService)
+        public CartController(ICartService cartService, UserManager<User> userManager)
         {
-            _cartService = cartService;
-            _userManager = userManager;
-            _serviceService = serviceService;
+            this.cartService = cartService;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -28,11 +28,11 @@ namespace AquaPlayground.Backend.Web.Controllers
         [Authorize]
         public async Task<IActionResult> GetCart()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
             try
             {
-                var orders = await _cartService.GetClientCart(user.Id);
+                var orders = await cartService.GetClientCart(user.Id);
 
                 return Ok(orders);
             }
@@ -47,11 +47,11 @@ namespace AquaPlayground.Backend.Web.Controllers
         [Authorize]
         public async Task<IActionResult> OrderFromCart(string? adress)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
             try
             {
-                await _cartService.OrderFromCart(user.Id, adress);
+                await cartService.OrderFromCart(user.Id, adress);
 
                 return Ok();
             }
@@ -71,11 +71,11 @@ namespace AquaPlayground.Backend.Web.Controllers
         [Authorize]
         public async Task<IActionResult> AddToCart(Guid id)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
             try
             {
-                await _cartService.AddServiceToCart(id, user.Id);
+                await cartService.AddServiceToCart(id, user.Id);
 
                 return Ok();
             }
@@ -94,11 +94,11 @@ namespace AquaPlayground.Backend.Web.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveFromCart(Guid id)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
             try
             {
-                await _cartService.RemoveServiceFromCart(id, user.Id);
+                await cartService.RemoveServiceFromCart(id, user.Id);
 
                 return Ok();
             }

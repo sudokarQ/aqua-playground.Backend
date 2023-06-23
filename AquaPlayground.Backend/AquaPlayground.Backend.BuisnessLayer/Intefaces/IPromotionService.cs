@@ -1,7 +1,7 @@
-﻿using AquaPlayground.Backend.Common.Models.Dto.Promotion;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
 {
+    using Common.Models.Dto.Promotion;
+
     public interface IPromotionService
     {
         Task CreateAsync(PromotionPostDto service);

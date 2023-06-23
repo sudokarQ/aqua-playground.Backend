@@ -1,7 +1,7 @@
-﻿using AquaPlayground.Backend.Common.Enums;
-
-namespace AquaPlayground.Backend.Common.Models.Entity
+﻿namespace AquaPlayground.Backend.Common.Models.Entity
 {
+    using Enums;
+
     public class Order
     {
         public Guid Id { get; set; }

@@ -1,15 +1,15 @@
-﻿using AquaPlayground.Backend.Common.DataBaseConfigurations;
-using AquaPlayground.Backend.Common.Models.Entity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace AquaPlayground.Backend.DataLayer
+﻿namespace AquaPlayground.Backend.DataLayer
 {
+    using Common.DataBaseConfigurations;
+    using Common.Models.Entity;
+
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
+
     public class SqlContext : IdentityDbContext<User>
     {
         public SqlContext()
         {
-
         }
 
         public SqlContext(DbContextOptions<SqlContext> options) : base(options)
@@ -26,15 +26,19 @@ namespace AquaPlayground.Backend.DataLayer
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderPromotionConfiguration());
             modelBuilder.ApplyConfiguration(new OrderServiceConfiguration());
-
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
         public DbSet<User> Users { get; set; }
+        
         public DbSet<Service> Services { get; set; }
+        
         public DbSet<Promotion> Promotions { get; set; }
+        
         public DbSet<Order> Orders { get; set; }
+        
         public DbSet<OrderPromotion> OrderPromotions { get; set; }
+        
         public DbSet<OrderService> OrderServices { get; set; }
     }
 }
