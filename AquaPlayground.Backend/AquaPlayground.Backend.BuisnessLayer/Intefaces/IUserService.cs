@@ -1,9 +1,10 @@
-﻿using AquaPlayground.Backend.Common.Models.Dto.User;
-using AquaPlayground.Backend.Common.Models.Entity;
-using Microsoft.AspNetCore.Identity;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
 {
+    using Common.Models.Dto.User;
+    using Common.Models.Entity;
+
+    using Microsoft.AspNetCore.Identity;
+
     public interface IUserService
     {
         Task<List<UserGetDto>> GetAllAsync();

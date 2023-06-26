@@ -1,19 +1,21 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.Service;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AquaPlayground.Backend.Web.Controllers
+﻿namespace AquaPlayground.Backend.Web.Controllers
 {
+    using BuisnessLayer.Intefaces;
+
+    using Common.Models.Dto.Service;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/[controller]")]
     [ApiController]
     public class ServiceController : Controller
     {
-        private readonly IServiceService _serviceService;
+        private readonly IServiceService serviceService;
 
         public ServiceController(IServiceService serviceService)
         {
-            _serviceService = serviceService;
+            this.serviceService = serviceService;
         }
 
 
@@ -23,7 +25,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var services = await _serviceService.GetAllAsync();
+                var services = await serviceService.GetAllAsync();
 
                 Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 Response.Headers.Add("Access-Control-Allow-Methods", "GET");
@@ -44,7 +46,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var services = await _serviceService.GetListByNameAsync(name);
+                var services = await serviceService.GetListByNameAsync(name);
 
                 return Ok(services);
             }
@@ -61,7 +63,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                await _serviceService.CreateAsync(servicePostDto);
+                await serviceService.CreateAsync(servicePostDto);
 
                 return Ok();
             }
@@ -78,7 +80,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                await _serviceService.RemoveAsync(id);
+                await serviceService.RemoveAsync(id);
 
                 return Ok();
             }
@@ -95,7 +97,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                await _serviceService.UpdateAsync(dto);
+                await serviceService.UpdateAsync(dto);
 
                 return Ok();
             }
@@ -112,7 +114,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var serviceDto = await _serviceService.FindByIdAsync(id);
+                var serviceDto = await serviceService.FindByIdAsync(id);
 
                 return Ok(serviceDto);
             }

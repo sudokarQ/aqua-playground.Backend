@@ -1,25 +1,27 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.User;
-using AquaPlayground.Backend.Common.Models.Entity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AquaPlayground.Backend.Web.Controllers
+﻿namespace AquaPlayground.Backend.Web.Controllers
 {
+    using BuisnessLayer.Intefaces;
+
+    using Common.Models.Dto.User;
+    using Common.Models.Entity;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class UserController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly IUserService userService;
 
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<User> userManager;
 
         public UserController(IUserService userService, UserManager<User> userManager)
         {
-            _userService = userService;
-            _userManager = userManager;
+            this.userService = userService;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -29,7 +31,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var users = await _userService.GetAllAsync();
+                var users = await userService.GetAllAsync();
 
                 return Ok(users);
             }
@@ -44,11 +46,11 @@ namespace AquaPlayground.Backend.Web.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetMyProfile()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
             try
             {
-                var result = await _userService.FindByIdAsync(user.Id);
+                var result = await userService.FindByIdAsync(user.Id);
 
                 return Ok(user);
             }
@@ -65,7 +67,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var users = await _userService.FindByNameAsync(name);
+                var users = await userService.FindByNameAsync(name);
 
                 return Ok(users);
             }
@@ -82,7 +84,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var users = await _userService.FindByLoginAsync(login);
+                var users = await userService.FindByLoginAsync(login);
 
                 return Ok(users);
             }
@@ -99,7 +101,7 @@ namespace AquaPlayground.Backend.Web.Controllers
         {
             try
             {
-                var user = await _userService.FindByIdAsync(id);
+                var user = await userService.FindByIdAsync(id);
 
                 return Ok(user);
             }
@@ -112,9 +114,9 @@ namespace AquaPlayground.Backend.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUser(UserUpdateDto dto)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
-            var result = await _userService.UpdateUserAsync(dto, user);
+            var result = await userService.UpdateUserAsync(dto, user);
 
             if (!result.Succeeded)
             {
@@ -127,9 +129,9 @@ namespace AquaPlayground.Backend.Web.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteUser()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
-            var result = await _userService.DeleteUserAsync(user);
+            var result = await userService.DeleteUserAsync(user);
 
             if (!result.Succeeded)
             {
@@ -143,14 +145,14 @@ namespace AquaPlayground.Backend.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await userManager.FindByIdAsync(id);
 
             if (user is null)
             {
                 return NotFound("Incorrect Id");
             }
 
-            var result = await _userService.DeleteUserAsync(user);
+            var result = await userService.DeleteUserAsync(user);
 
             if (!result.Succeeded)
             {

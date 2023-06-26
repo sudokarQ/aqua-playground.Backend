@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace AquaPlayground.Backend.Web.Controllers
+﻿namespace AquaPlayground.Backend.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    
     [Route("api/pictures")]
     [ApiController]
     public class PicturesController : ControllerBase
@@ -23,17 +23,24 @@ namespace AquaPlayground.Backend.Web.Controllers
 
         private byte[] GetPictureData(string id)
         {
-            if (Guid.TryParse(id, out var result))
+            try
             {
-                string filePath = $"Pictures/{id}.jpg";
+                if (Guid.TryParse(id, out var result))
+                {
+                    string filePath = $"Pictures/{id}.jpg";
 
-                byte[] pictureData = System.IO.File.ReadAllBytes(filePath);
+                    byte[] pictureData = System.IO.File.ReadAllBytes(filePath);
 
-                return pictureData;
+                    return pictureData;
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return null; 
+                return null;
             }
         }
     }

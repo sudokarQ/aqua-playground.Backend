@@ -1,9 +1,10 @@
-﻿using AquaPlayground.Backend.Common.Models.Entity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace AquaPlayground.Backend.Common.DataBaseConfigurations
+﻿namespace AquaPlayground.Backend.Common.DataBaseConfigurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    using Models.Entity;
+
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)

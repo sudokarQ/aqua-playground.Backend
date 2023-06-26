@@ -1,8 +1,9 @@
-﻿using AquaPlayground.Backend.Common.Enums;
-using AquaPlayground.Backend.Common.Models.Dto.Service;
-
-namespace AquaPlayground.Backend.Common.Models.Dto.Order
+﻿namespace AquaPlayground.Backend.Common.Models.Dto.Order
 {
+    using Enums;
+
+    using Service;
+
     public class OrderGetDto
     {
         public Guid Id { get; set; }

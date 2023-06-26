@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AquaPlayground.Backend.Common.Models.Dto.Service
+﻿namespace AquaPlayground.Backend.Common.Models.Dto.Service
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ServicePostDto
     {
         [Required]

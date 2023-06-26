@@ -3,18 +3,19 @@
     [TestFixture]
     public class ServiceServiceTests
     {
-        private IServiceService _serviceService;
-        private Mock<IServiceRepository> _serviceRepositoryMock;
+        private IServiceService serviceService;
+
+        private Mock<IServiceRepository> serviceRepositoryMock;
 
         [SetUp]
         public void Setup()
         {
-            _serviceRepositoryMock = new Mock<IServiceRepository>();
-            _serviceService = new ServiceService(_serviceRepositoryMock.Object);
+            serviceRepositoryMock = new Mock<IServiceRepository>();
+            serviceService = new ServiceService(serviceRepositoryMock.Object);
         }
 
         [Test]
-        public async Task CreateAsync_ValidInput_CreatesService()
+        public async Task CreateAsyncValidInputCreatesService()
         {
             // Arrange
             var service = new ServicePostDto
@@ -25,28 +26,28 @@
                 Description = "Description"
             };
 
-            _serviceRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<Service>()))
+            serviceRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<Service>()))
      .Returns(Task.FromResult(new Service { Id = new Guid() }));
 
 
             // Act
-            await _serviceService.CreateAsync(service);
+            await serviceService.CreateAsync(service);
 
             // Assert
-            _serviceRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Service>()), Times.Once);
+            serviceRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Service>()), Times.Once);
         }
 
         [Test]
-        public async Task FindByIdAsync_ServiceExists_ReturnsService()
+        public async Task FindByIdAsyncServiceExistsReturnsService()
         {
             // Arrange
             var serviceId = new Guid();
 
-            _serviceRepositoryMock.Setup(x => x.FindByIdAsync(serviceId))
+            serviceRepositoryMock.Setup(x => x.FindByIdAsync(serviceId))
                 .ReturnsAsync(new Service { Id = serviceId });
 
             // Act
-            var result = await _serviceService.FindByIdAsync(serviceId);
+            var result = await serviceService.FindByIdAsync(serviceId);
 
             // Assert
             Assert.IsNotNull(result);
@@ -54,28 +55,28 @@
         }
 
         [Test]
-        public async Task FindByIdAsync_ServiceDoesNotExist_ReturnsNull()
+        public async Task FindByIdAsyncServiceDoesNotExistReturnsNull()
         {
             // Arrange
             var serviceId = new Guid();
 
-            _serviceRepositoryMock.Setup(x => x.FindByIdAsync(serviceId))
+            serviceRepositoryMock.Setup(x => x.FindByIdAsync(serviceId))
                 .ReturnsAsync((Service)null);
 
             // Act
-            var result = await _serviceService.FindByIdAsync(serviceId);
+            var result = await serviceService.FindByIdAsync(serviceId);
 
             // Assert
             Assert.IsNull(result);
         }
 
         [Test]
-        public async Task GetListByNameAsync_ServicesExist_ReturnsServices()
+        public async Task GetListByNameAsyncServicesExistReturnsServices()
         {
             // Arrange
             var serviceName = "Service";
 
-            _serviceRepositoryMock.Setup(x => x.GetAsync(It.IsAny<Expression<Func<Service, bool>>>()))
+            serviceRepositoryMock.Setup(x => x.GetAsync(It.IsAny<Expression<Func<Service, bool>>>()))
                 .ReturnsAsync(new List<Service>
                 {
                     new Service { Name = serviceName + "1" },
@@ -84,11 +85,13 @@
                 });
 
             // Act
-            var result = await _serviceService.GetListByNameAsync(serviceName);
+            var result = await serviceService.GetListByNameAsync(serviceName);
 
             // Assert
             Assert.IsNotNull(result);
+
             Assert.AreEqual(3, result.Count);
+            
             Assert.IsTrue(result.All(x => x.Name.StartsWith(serviceName, StringComparison.OrdinalIgnoreCase)));
         }
     }

@@ -1,13 +1,15 @@
-﻿using AquaPlayground.Backend.Common.Models.Entity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
-namespace AquaPlayground.Backend.DataLayer.Helpers
+﻿namespace AquaPlayground.Backend.DataLayer.Helpers
 {
+    using System.Text;
+
+    using Common.Models.Entity;
+
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
+
     public static class ServiceExtensions
     {
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -15,12 +17,14 @@ namespace AquaPlayground.Backend.DataLayer.Helpers
             var builder = services.AddIdentityCore<User>(q => q.User.RequireUniqueEmail = true);
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
+
             builder.AddEntityFrameworkStores<SqlContext>().AddDefaultTokenProviders();
         }
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");
+
             var key = Environment.GetEnvironmentVariable("KEY", EnvironmentVariableTarget.Machine);
 
             services.AddAuthentication(o =>

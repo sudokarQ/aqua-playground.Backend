@@ -1,5 +1,6 @@
 using AquaPlayground.Backend.DataLayer.Helpers;
 using AquaPlayground.Backend.Web.Configurations;
+
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +27,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 AddSwaggerDoc(builder.Services);
 
-AquaPlayground.Backend.BuisnessLayer.Helpers.DI.Add(builder.Configuration, builder.Services); //закинуть все в один
+AquaPlayground.Backend.BuisnessLayer.Helpers.DI.Add(builder.Configuration, builder.Services);
 DI.Add(builder.Configuration, builder.Services);
 
 var app = builder.Build();

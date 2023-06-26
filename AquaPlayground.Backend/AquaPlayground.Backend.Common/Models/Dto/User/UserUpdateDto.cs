@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AquaPlayground.Backend.Common.Models.Dto.User
+﻿namespace AquaPlayground.Backend.Common.Models.Dto.User
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class UserUpdateDto
     {
         [DataType(DataType.Password)]

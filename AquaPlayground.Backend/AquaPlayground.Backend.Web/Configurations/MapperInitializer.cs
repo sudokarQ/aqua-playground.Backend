@@ -1,12 +1,13 @@
-﻿using AquaPlayground.Backend.Common.Models.Dto.Order;
-using AquaPlayground.Backend.Common.Models.Dto.Promotion;
-using AquaPlayground.Backend.Common.Models.Dto.Service;
-using AquaPlayground.Backend.Common.Models.Dto.User;
-using AquaPlayground.Backend.Common.Models.Entity;
-using AutoMapper;
-
-namespace AquaPlayground.Backend.Web.Configurations
+﻿namespace AquaPlayground.Backend.Web.Configurations
 {
+    using AutoMapper;
+
+    using Common.Models.Dto.Order;
+    using Common.Models.Dto.Promotion;
+    using Common.Models.Dto.Service;
+    using Common.Models.Dto.User;
+    using Common.Models.Entity;
+
     public class MapperInitializer : Profile
     {
         public MapperInitializer()

@@ -1,31 +1,35 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.Promotion;
-using AquaPlayground.Backend.Common.Models.Entity;
-using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using AutoMapper;
-using System.ComponentModel.DataAnnotations;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Services
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using AutoMapper;
+
+    using Common.Models.Dto.Promotion;
+    using Common.Models.Entity;
+
+    using DataLayer.Repositories.Interfaces;
+
+    using Intefaces;
+
     public class PromotionService : IPromotionService
     {
-        private readonly IPromotionRepository _promotionRepository;
+        private readonly IPromotionRepository promotionRepository;
 
-        private readonly IMapper _mapper;
+        private readonly IMapper mapper;
 
         public PromotionService(IPromotionRepository promotionRepository, IMapper mapper)
         {
-            _promotionRepository = promotionRepository;
-            _mapper = mapper;
+            this.promotionRepository = promotionRepository;
+            this.mapper = mapper;
         }
 
         public async Task CreateAsync(PromotionPostDto promotion)
         {
             if (Validation(promotion))
             {
-                var result = _mapper.Map<Promotion>(promotion);
+                var result = mapper.Map<Promotion>(promotion);
 
-                await _promotionRepository.CreateAsync(result);
+                await promotionRepository.CreateAsync(result);
             }
             else
             {
@@ -34,46 +38,46 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
         }
         public async Task<List<PromotionGetDto>> GetAllAsync()
         {
-            var promotions = await _promotionRepository.GetAllAsync();
+            var promotions = await promotionRepository.GetAllAsync();
 
-            var result = _mapper.Map<List<PromotionGetDto>>(promotions);
+            var result = mapper.Map<List<PromotionGetDto>>(promotions);
 
             return result;
         }
 
         public async Task<List<PromotionGetDto>> GetListByNameAsync(string name)
         {
-            var promotions = await _promotionRepository.GetListByNameAsync(name);
+            var promotions = await promotionRepository.GetListByNameAsync(name);
 
-            var result = _mapper.Map<List<PromotionGetDto>>(promotions);
+            var result = mapper.Map<List<PromotionGetDto>>(promotions);
 
             return result;
         }
 
         public async Task<PromotionGetDto> FindByIdAsync(Guid id)
         {
-            var promotion = await _promotionRepository.FindByIdAsync(id);
+            var promotion = await promotionRepository.FindByIdAsync(id);
 
-            var result = _mapper.Map<PromotionGetDto>(promotion);
+            var result = mapper.Map<PromotionGetDto>(promotion);
 
             return result;
         }
 
         public async Task RemoveAsync(Guid id)
         {
-            var promotion = await _promotionRepository.FindByIdAsync(id);
+            var promotion = await promotionRepository.FindByIdAsync(id);
 
             if (promotion is null)
             {
                 throw new ArgumentNullException("Promotinon not found");
             }
 
-            await _promotionRepository.RemoveAsync(promotion);
+            await promotionRepository.RemoveAsync(promotion);
         }
 
         public async Task UpdateAsync(PromotionPutDto dto)
         {
-            var promotion = await _promotionRepository.FindByIdAsync(dto.Id);
+            var promotion = await promotionRepository.FindByIdAsync(dto.Id);
 
             if (promotion is null)
             {
@@ -91,7 +95,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             promotion.EndDate = dto.EndDate ?? promotion.EndDate;
             promotion.DiscountPercent = dto.DiscountPercent ?? promotion.DiscountPercent;
 
-            await _promotionRepository.UpdateAsync(promotion);
+            await promotionRepository.UpdateAsync(promotion);
         }
 
         public static bool Validation(IPromotionDto dto)

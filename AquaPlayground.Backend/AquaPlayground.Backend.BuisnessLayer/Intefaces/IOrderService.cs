@@ -1,8 +1,7 @@
-﻿using AquaPlayground.Backend.Common.Models.Dto.Order;
-using AquaPlayground.Backend.Common.Models.Entity;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Intefaces
 {
+    using Common.Models.Dto.Order;
+
     public interface IOrderService
     {
         Task CreateAsync(OrderPostDto order, string userId);

@@ -1,11 +1,12 @@
-﻿using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using AquaPlayground.Backend.DataLayer.Repositories.Repos;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace AquaPlayground.Backend.DataLayer.Helpers
+﻿namespace AquaPlayground.Backend.DataLayer.Helpers
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Repositories.Interfaces;
+    using Repositories.Repos;
+
     public static class DI
     {
         public static void Add(IConfiguration conf, IServiceCollection service)

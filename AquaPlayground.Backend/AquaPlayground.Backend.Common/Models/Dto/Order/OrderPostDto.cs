@@ -1,8 +1,9 @@
-﻿using AquaPlayground.Backend.Common.Enums;
-using System.ComponentModel.DataAnnotations;
-
-namespace AquaPlayground.Backend.Common.Models.Dto.Order
+﻿namespace AquaPlayground.Backend.Common.Models.Dto.Order
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using Enums;
+
     public class OrderPostDto
     {
         [Required]
@@ -15,6 +16,6 @@ namespace AquaPlayground.Backend.Common.Models.Dto.Order
         public OrderStatus Status { get; set; }
 
         [Required]
-        public List<Guid> ServicesId { get; set; } = new List<Guid>();  
+        public List<Guid> ServicesId { get; set; } = new List<Guid>();
     }
 }

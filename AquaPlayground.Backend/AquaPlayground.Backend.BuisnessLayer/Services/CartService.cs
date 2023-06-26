@@ -1,43 +1,50 @@
-﻿using AquaPlayground.Backend.BuisnessLayer.Intefaces;
-using AquaPlayground.Backend.Common.Models.Dto.Order;
-using AquaPlayground.Backend.Common.Models.Dto.Service;
-using AquaPlayground.Backend.Common.Models.Entity;
-using AquaPlayground.Backend.DataLayer.Repositories.Interfaces;
-using AutoMapper;
-
-namespace AquaPlayground.Backend.BuisnessLayer.Services
+﻿namespace AquaPlayground.Backend.BuisnessLayer.Services
 {
+    using AutoMapper;
+
+    using Common.Models.Dto.Order;
+    using Common.Models.Dto.Service;
+    using Common.Models.Entity;
+
+    using DataLayer.Repositories.Interfaces;
+
+    using Intefaces;
+
     public class CartService : ICartService
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderRepository orderRepository;
 
-        private readonly IServiceRepository _serviceRepository;
+        private readonly IServiceRepository serviceRepository;
 
-        private readonly IOrderServiceRepository _orderServiceRepository;
+        private readonly IOrderServiceRepository orderServiceRepository;
 
-        private readonly IOrderService _orderService;
+        private readonly IOrderService orderService;
 
-        private readonly IMapper _mapper;
+        private readonly IMapper mapper;
 
-        public CartService(IOrderRepository orderRepository, IMapper mapper, IServiceRepository serviceRepository, IOrderServiceRepository orderServiceRepository, IOrderService orderService)
+        public CartService(IOrderRepository orderRepository, 
+            IMapper mapper, 
+            IServiceRepository serviceRepository, 
+            IOrderServiceRepository orderServiceRepository, 
+            IOrderService orderService)
         {
-            _orderRepository = orderRepository;
-            _mapper = mapper;
-            _serviceRepository = serviceRepository;
-            _orderServiceRepository = orderServiceRepository;
-            _orderService = orderService;
+            this.orderRepository = orderRepository;
+            this.mapper = mapper;
+            this.serviceRepository = serviceRepository;
+            this.orderServiceRepository = orderServiceRepository;
+            this.orderService = orderService;
         }
 
         public async Task<OrderGetDto> GetClientCart(string userId)
         {
-            var order = await _orderRepository.GetClientCart(userId);
+            var order = await orderRepository.GetClientCart(userId);
 
             if (!await DoesOrderExist(order, userId))
             {
-                order = await _orderRepository.GetClientCart(userId);
+                order = await orderRepository.GetClientCart(userId);
             }
 
-            var result = _mapper.Map<OrderGetDto>(order);
+            var result = mapper.Map<OrderGetDto>(order);
 
             result.PhoneNumber = order.User.PhoneNumber;
             result.Services = order.OrderServices.Select(os => new ServiceSearchGetDto
@@ -52,14 +59,14 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
         public async Task AddServiceToCart(Guid id, string userId)
         {
-            var order = await _orderRepository.GetClientCart(userId);
+            var order = await orderRepository.GetClientCart(userId);
 
             if (!await DoesOrderExist(order, userId))
             {
-                order = await _orderRepository.GetClientCart(userId);
+                order = await orderRepository.GetClientCart(userId);
             }
 
-            var service = await _serviceRepository.FindByIdAsync(id);
+            var service = await serviceRepository.FindByIdAsync(id);
 
             if (service is null)
             {
@@ -83,21 +90,21 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
             orderService.Order = null;
             orderService.Service = null;
-            await _orderServiceRepository.CreateAsync(orderService);
+            await orderServiceRepository.CreateAsync(orderService);
 
-            await _orderRepository.UpdateAsync(order);
+            await orderRepository.UpdateAsync(order);
         }
 
         public async Task RemoveServiceFromCart(Guid id, string userId)
         {
-            var order = await _orderRepository.GetClientCart(userId);
+            var order = await orderRepository.GetClientCart(userId);
 
             if (!await DoesOrderExist(order, userId))
             {
-                order = await _orderRepository.GetClientCart(userId);
+                order = await orderRepository.GetClientCart(userId);
             }
 
-            var service = await _serviceRepository.FindByIdAsync(id);
+            var service = await serviceRepository.FindByIdAsync(id);
 
             if (service is null)
             {
@@ -128,14 +135,14 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
 
             orderService.Order = null;
             orderService.Service = null;
-            await _orderServiceRepository.RemoveAsync(orderService);
+            await orderServiceRepository.RemoveAsync(orderService);
 
-            await _orderRepository.UpdateAsync(order);
+            await orderRepository.UpdateAsync(order);
         }
 
         public async Task<Order> OrderFromCart(string userId, string adress)
         {
-            var order = await _orderRepository.GetClientCart(userId);
+            var order = await orderRepository.GetClientCart(userId);
 
 
             if (order is null || order.OrderServices.Count == 0)
@@ -155,7 +162,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
             order.DeliveryAdress = adress;
             order.Status = Common.Enums.OrderStatus.Ordered;
 
-            await _orderRepository.UpdateAsync(order);
+            await orderRepository.UpdateAsync(order);
 
             return order;
         }
@@ -164,7 +171,7 @@ namespace AquaPlayground.Backend.BuisnessLayer.Services
         {
             if (order is null)
             {
-                await _orderService.CreateAsync(new OrderPostDto
+                await orderService.CreateAsync(new OrderPostDto
                 {
                     Status = Common.Enums.OrderStatus.InCart,
                     DeliveryAdress = "Empty",
